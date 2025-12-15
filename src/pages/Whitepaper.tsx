@@ -80,7 +80,7 @@ export default function Whitepaper() {
             <span>Published December 2025</span>
           </div>
           <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-tight">
-            AGENT ARENA <br />
+            ARENA-X <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">PROTOCOL</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -145,11 +145,11 @@ export default function Whitepaper() {
       <footer className="border-t border-border/50 py-12 bg-muted/20">
         <div className="max-w-5xl mx-auto px-6 text-center space-y-4">
           <div className="flex items-center justify-center gap-2 font-bold text-xl">
-            <img src="/logo.svg" alt="Logo" className="h-8 w-8" />
-            Agent Arena
+            <img src="/arenalogo.png" alt="Logo" className="h-8 w-8" />
+            ARENA-X
           </div>
           <p className="text-sm text-muted-foreground">
-            © 2025 Agent Arena. Built on Linera. All rights reserved.
+            © 2025 ARENA-X. Built on Linera. All rights reserved.
           </p>
         </div>
       </footer>

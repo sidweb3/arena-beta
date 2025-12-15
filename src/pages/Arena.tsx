@@ -52,9 +52,9 @@ export default function Arena() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/")}>
-              <img src="./logo.svg" alt="Agent Arena" className="h-10 w-10" />
+              <img src="/arenalogo.png" alt="ARENA-X" className="h-10 w-10" />
               <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
-                Agent Arena
+                ARENA-X
               </span>
             </div>
             <WalletConnect />

@@ -12,10 +12,10 @@ export function Navbar() {
           <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate("/")}>
             <div className="relative">
               <div className="absolute inset-0 bg-primary/50 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-              <img src="/logo.png" alt="Agent Arena" className="h-10 w-10 relative z-10 rounded-lg" />
+              <img src="/arenalogo.png" alt="ARENA-X" className="h-10 w-10 relative z-10 rounded-lg" />
             </div>
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
-              Agent Arena
+              ARENA-X
             </span>
           </div>
           <div className="flex items-center gap-4">

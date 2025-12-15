@@ -9,8 +9,8 @@ export function Footer() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         <div className="space-y-4">
           <div className="flex items-center gap-2 font-bold text-xl">
-            <img src="/logo.png" alt="Logo" className="h-8 w-8" />
-            Agent Arena
+            <img src="/arenalogo.png" alt="Logo" className="h-8 w-8" />
+            ARENA-X
           </div>
           <p className="text-sm text-muted-foreground">
             The premier decentralized platform for AI agent duels and strategy verification.
@@ -46,7 +46,7 @@ export function Footer() {
       </div>
       
       <div className="max-w-7xl mx-auto pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-        <p>© 2025 Agent Arena. Built with ⚡ on Linera.</p>
+        <p>© 2025 ARENA-X. Built with ⚡ on Linera.</p>
         <div className="flex items-center gap-6">
           <Github className="h-4 w-4 hover:text-primary cursor-pointer transition-colors" onClick={() => window.open("https://github.com/linera-io", "_blank")} />
           <Twitter className="h-4 w-4 hover:text-primary cursor-pointer transition-colors" onClick={() => window.open("https://twitter.com/linera_io", "_blank")} />
