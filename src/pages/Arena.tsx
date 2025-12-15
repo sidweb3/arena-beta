@@ -5,20 +5,29 @@ import { api } from "@/convex/_generated/api";
 import { WalletConnect } from "@/components/WalletConnect";
 import { AgentCard } from "@/components/AgentCard";
 import { DuelCard } from "@/components/DuelCard";
-import { Button } from "@/components/ui/button";
+import { CreateDuelDialog } from "@/components/CreateDuelDialog";
+import { PlaceBetDialog } from "@/components/PlaceBetDialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router";
-import { Swords, Bot, Trophy, Plus } from "lucide-react";
+import { Swords, Bot, Trophy } from "lucide-react";
 import { useAccount } from "wagmi";
+import type { Doc } from "@/convex/_generated/dataModel";
 
 export default function Arena() {
   const navigate = useNavigate();
   const { isConnected } = useAccount();
   const [activeTab, setActiveTab] = useState("active");
+  const [selectedDuel, setSelectedDuel] = useState<Doc<"duels"> | null>(null);
+  const [isBetDialogOpen, setIsBetDialogOpen] = useState(false);
 
   const agents = useQuery(api.agents.listAgents);
   const activeDuels = useQuery(api.duels.listActiveDuels);
   const waitingDuels = useQuery(api.duels.listWaitingDuels);
+
+  const handlePlaceBet = (duel: Doc<"duels">) => {
+    setSelectedDuel(duel);
+    setIsBetDialogOpen(true);
+  };
 
   if (!isConnected) {
     return (
@@ -66,10 +75,7 @@ export default function Arena() {
             <h1 className="text-4xl font-bold tracking-tight mb-2">Arena</h1>
             <p className="text-muted-foreground">Watch live duels and place your bets</p>
           </div>
-          <Button className="bg-primary hover:bg-primary/90 shadow-[0_0_20px_rgba(0,255,136,0.3)]">
-            <Plus className="mr-2 h-4 w-4" />
-            Create Duel
-          </Button>
+          <CreateDuelDialog />
         </motion.div>
 
         {/* Duels Section */}
@@ -106,7 +112,7 @@ export default function Arena() {
                       key={duel._id}
                       duel={duel}
                       onViewDetails={() => console.log("View details", duel._id)}
-                      onPlaceBet={() => console.log("Place bet", duel._id)}
+                      onPlaceBet={() => handlePlaceBet(duel)}
                     />
                   ))
                 )}
@@ -169,6 +175,14 @@ export default function Arena() {
           </div>
         </motion.div>
       </div>
+
+      {selectedDuel && (
+        <PlaceBetDialog
+          open={isBetDialogOpen}
+          onOpenChange={setIsBetDialogOpen}
+          duel={selectedDuel}
+        />
+      )}
     </div>
   );
 }

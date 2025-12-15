@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { config } from './lib/wagmi'
 import "./index.css";
 import "./types/global.d.ts";
+import { WalletSync } from "./components/WalletSync";
 
 const queryClient = new QueryClient()
 
@@ -61,6 +62,7 @@ createRoot(document.getElementById("root")!).render(
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <ConvexAuthProvider client={convex}>
+            <WalletSync />
             <BrowserRouter>
               <RouteSyncer />
               <Suspense fallback={<RouteLoading />}>
