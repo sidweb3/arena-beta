@@ -25,8 +25,7 @@ import { useAccount } from "wagmi";
 import { useLinera } from "@/contexts/LineraContext";
 import { useLineraContract } from "@/hooks/useLineraContract";
 import type { Doc, Id } from "@/convex/_generated/dataModel";
-
-const LINERA_APP_ID = import.meta.env.VITE_LINERA_APP_ID || "e476187f6ddfeb9d588c7b45d3df334d5501d6499b3f9ad5595cae86cce16a6501360434d5a27b1b353fa994d152ee571263558e9d818457a4752d18d3d4477600";
+import { LINERA_APP_ID } from "@/lib/linera";
 
 interface PlaceBetDialogProps {
   open: boolean;

@@ -1,6 +1,9 @@
 // Configuration and helper functions for Linera integration
 // This file will contain the core logic for interacting with the Linera SDK
 
+// Default App ID for the Agent Arena contract (Testnet 0.15.7 compatible)
+export const LINERA_APP_ID = import.meta.env.VITE_LINERA_APP_ID || "e476187f6ddfeb9d588c7b45d3df334d5501d6499b3f9ad5595cae86cce16a6501360434d5a27b1b353fa994d152ee571263558e9d818457a4752d18d3d4477600";
+
 export const LINERA_CONFIG = {
   network: import.meta.env.VITE_LINERA_NETWORK || 'testnet',
   nodeUrl: import.meta.env.VITE_LINERA_NODE_URL || 'http://localhost:8080',
