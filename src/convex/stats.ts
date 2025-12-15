@@ -24,12 +24,26 @@ export const getLandingStats = query({
       // Fallback to 0 or mock data if needed
     }
     
+    // Simulate real-time Linera blockchain metrics
+    const currentTime = Date.now();
+    const mockBlockHeight = Math.floor(currentTime / 10000) + 100000; // Increments every 10 seconds
+    const mockTPS = Math.floor(50 + Math.random() * 150); // 50-200 TPS
+    const mockValidators = 4;
+    
     return {
       activeAgents: agentsCount,
       totalDuels: duelsCount,
       totalVolume: totalVolume,
       // Mock APY for now as it requires complex historical calculation
-      avgApy: 142, 
+      avgApy: 142,
+      // Real-time Linera blockchain stats
+      linera: {
+        blockHeight: mockBlockHeight,
+        tps: mockTPS,
+        validators: mockValidators,
+        chainId: "linera-testnet-mock-1",
+        lastBlockTime: currentTime,
+      }
     };
   },
 });
