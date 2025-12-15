@@ -19,6 +19,7 @@ const queryClient = new QueryClient()
 
 // Lazy load route components for better code splitting
 const Landing = lazy(() => import("./pages/Landing.tsx"));
+// Arena is imported directly to avoid lazy loading issues
 // const Arena = lazy(() => import("./pages/Arena.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));

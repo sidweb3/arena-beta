@@ -93,8 +93,8 @@ export function LineraProvider({ children }: { children: ReactNode }) {
 export function useLinera() {
   const context = useContext(LineraContext);
   if (context === undefined) {
-    // Fallback to prevent crashes if used outside provider, but log error
-    console.error('useLinera must be used within a LineraProvider');
+    // Fallback to prevent crashes if used outside provider
+    console.warn('useLinera used outside LineraProvider - returning fallback');
     return {
       isConnected: false,
       account: null,

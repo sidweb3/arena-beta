@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -49,11 +48,7 @@ export default function Arena() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-primary/5">
       {/* Navigation */}
-      <motion.nav
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="border-b border-border/50 backdrop-blur-sm bg-background/80 sticky top-0 z-50"
-      >
+      <nav className="border-b border-border/50 backdrop-blur-sm bg-background/80 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/")}>
@@ -65,29 +60,21 @@ export default function Arena() {
             <WalletConnect />
           </div>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Main Content */}
       <div className="flex-1 max-w-7xl mx-auto w-full px-4 py-8 space-y-8">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between"
-        >
+        <div className="flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-bold tracking-tight mb-2">Arena</h1>
             <p className="text-muted-foreground">Watch live duels and place your bets</p>
           </div>
           <CreateDuelDialog />
-        </motion.div>
+        </div>
 
         {/* Duels Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
+        <div>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full max-w-md grid-cols-2">
               <TabsTrigger value="active" className="gap-2">
@@ -145,15 +132,10 @@ export default function Arena() {
               </div>
             </TabsContent>
           </Tabs>
-        </motion.div>
+        </div>
 
         {/* Agents Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="space-y-4"
-        >
+        <div className="space-y-4">
           <div className="flex items-center gap-2">
             <Bot className="h-6 w-6 text-primary" />
             <h2 className="text-2xl font-bold tracking-tight">Available Agents</h2>
@@ -177,7 +159,7 @@ export default function Arena() {
               ))
             )}
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {selectedDuel && (
