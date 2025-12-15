@@ -68,8 +68,16 @@ export function WalletConnect() {
     <div className="relative">
       {((isWagmiConnected && address) || (isLineraConnected && lineraAccount)) ? (
         <div
+          key="connected"
           className="flex items-center gap-2"
         >
+>>>>>>> REPLACE
+<<<<<<< SEARCH
+      ) : (
+        <div className="flex gap-2">
+=======
+      ) : (
+        <div key="disconnected" className="flex gap-2">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-primary/10 border border-primary/20 text-sm font-mono">
             <span className="text-xs text-muted-foreground uppercase">{isLineraConnected ? 'Linera' : 'EVM'}</span>
             {isLineraConnected && isLineraMock && (

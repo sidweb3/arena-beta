@@ -62,11 +62,14 @@ export default function Landing() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground overflow-hidden">
       {/* Navigation */}
-      <motion.nav
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+      <nav
         className="border-b border-border/50 backdrop-blur-md bg-background/80 sticky top-0 z-50"
       >
+>>>>>>> REPLACE
+<<<<<<< SEARCH
+      </motion.nav>
+=======
+      </nav>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate("/")}>
