@@ -2,7 +2,7 @@ import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { Button } from '@/components/ui/button'
 import { Wallet, LogOut, Loader2, Zap } from 'lucide-react'
 import { toast } from 'sonner'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useLinera } from '@/contexts/LineraContext'
 import { Badge } from '@/components/ui/badge'
 
@@ -20,6 +20,10 @@ export function WalletConnect() {
     isLoading: isLineraLoading,
     isMock: isLineraMock
   } = useLinera()
+
+  // Mount state to prevent hydration mismatch
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
   useEffect(() => {
     if (error) {
@@ -48,79 +52,6 @@ export function WalletConnect() {
     }
   }
 
-  const handleDisconnect = () => {
-    if (isWagmiConnected) disconnect()
-    if (isLineraConnected) disconnectLinera()
-    toast.success('Wallet disconnected')
-  }
-
-  // Wrap in a stable div to prevent removeChild errors during state transitions
-  const isConnected = (isWagmiConnected && address) || (isLineraConnected && lineraAccount);
-
-  return (
-    <div className="relative flex items-center gap-2 min-h-[40px]">
-      {isConnected ? (
-        <div key="connected" className="flex items-center gap-2 animate-in fade-in duration-200">
-=======
-      ) : (
-        <div key="disconnected" className="flex gap-2">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-primary/10 border border-primary/20 text-sm font-mono">
-            <span className="text-xs text-muted-foreground uppercase">{isLineraConnected ? 'Linera' : 'EVM'}</span>
-            {isLineraConnected && isLineraMock && (
-              <Badge variant="secondary" className="h-4 px-1 text-[10px]">MOCK</Badge>
-            )}
-            <span className="w-px h-3 bg-primary/20" />
-            {(isLineraConnected ? lineraAccount : address)?.slice(0, 6)}...{(isLineraConnected ? lineraAccount : address)?.slice(-4)}
-          </div>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handleDisconnect}
-            className="border-destructive/50 hover:bg-destructive/10"
-          >
-            <LogOut className="h-4 w-4" />
-          </Button>
-        </div>
-      ) : (
-        <div className="flex gap-2">
-          <Button
-            onClick={handleLineraConnect}
-            disabled={isLineraLoading}
-            className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
-          >
-            {isLineraLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Zap className="mr-2 h-4 w-4" />
-            )}
-            Connect Linera
-          </Button>
-          
-          <Button
-            onClick={handleConnect}
-            disabled={isPending}
-            variant="outline"
-            className="border-primary/50 hover:bg-primary/10"
-          >
-            {isPending ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Wallet className="mr-2 h-4 w-4" />
-            )}
-            Connect EVM
-          </Button>
-        </div>
-      )}
-      {/* Helper Note */}
-      {!((isWagmiConnected && address) || (isLineraConnected && lineraAccount)) && (
-        <div className="absolute -bottom-6 left-0 right-0 text-[10px] text-center text-muted-foreground opacity-70">
-          Supports Linera & EVM Wallets
-        </div>
-      )}
-    </div>
-  )
-}
-=======
   const handleLineraConnect = async () => {
     try {
       await connectLinera()
@@ -130,7 +61,16 @@ export function WalletConnect() {
     }
   }
 
-  // Wrap in a stable div to prevent removeChild errors during state transitions
+  const handleDisconnect = () => {
+    if (isWagmiConnected) disconnect()
+    if (isLineraConnected) disconnectLinera()
+    toast.success('Wallet disconnected')
+  }
+
+  if (!mounted) {
+    return <div className="min-h-[40px] w-[140px] bg-muted/10 rounded-md animate-pulse" />
+  }
+
   const isConnected = (isWagmiConnected && address) || (isLineraConnected && lineraAccount);
 
   return (
@@ -185,74 +125,7 @@ export function WalletConnect() {
         </div>
       )}
       {/* Helper Note */}
-      {!((isWagmiConnected && address) || (isLineraConnected && lineraAccount)) && (
-        <div className="absolute -bottom-6 left-0 right-0 text-[10px] text-center text-muted-foreground opacity-70">
-          Supports Linera & EVM Wallets
-        </div>
-      )}
-    </div>
-  )
-}
-=======
-  // Wrap in a stable div to prevent removeChild errors during state transitions
-  const isConnected = (isWagmiConnected && address) || (isLineraConnected && lineraAccount);
-
-  return (
-    <div className="relative flex items-center gap-2 min-h-[40px]">
-      {isConnected ? (
-        <div key="connected" className="flex items-center gap-2 animate-in fade-in duration-200">
-=======
-      ) : (
-        <div key="disconnected" className="flex gap-2">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-primary/10 border border-primary/20 text-sm font-mono">
-            <span className="text-xs text-muted-foreground uppercase">{isLineraConnected ? 'Linera' : 'EVM'}</span>
-            {isLineraConnected && isLineraMock && (
-              <Badge variant="secondary" className="h-4 px-1 text-[10px]">MOCK</Badge>
-            )}
-            <span className="w-px h-3 bg-primary/20" />
-            {(isLineraConnected ? lineraAccount : address)?.slice(0, 6)}...{(isLineraConnected ? lineraAccount : address)?.slice(-4)}
-          </div>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handleDisconnect}
-            className="border-destructive/50 hover:bg-destructive/10"
-          >
-            <LogOut className="h-4 w-4" />
-          </Button>
-        </div>
-      ) : (
-        <div className="flex gap-2">
-          <Button
-            onClick={handleLineraConnect}
-            disabled={isLineraLoading}
-            className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
-          >
-            {isLineraLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Zap className="mr-2 h-4 w-4" />
-            )}
-            Connect Linera
-          </Button>
-          
-          <Button
-            onClick={handleConnect}
-            disabled={isPending}
-            variant="outline"
-            className="border-primary/50 hover:bg-primary/10"
-          >
-            {isPending ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Wallet className="mr-2 h-4 w-4" />
-            )}
-            Connect EVM
-          </Button>
-        </div>
-      )}
-      {/* Helper Note */}
-      {!((isWagmiConnected && address) || (isLineraConnected && lineraAccount)) && (
+      {!isConnected && (
         <div className="absolute -bottom-6 left-0 right-0 text-[10px] text-center text-muted-foreground opacity-70">
           Supports Linera & EVM Wallets
         </div>
