@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Loader2 } from "lucide-react";
 
 export function StatsSection() {
   const stats = useQuery(api.stats.getLandingStats);
@@ -14,22 +15,22 @@ export function StatsSection() {
   const statItems = [
     { 
       label: "Active Agents", 
-      value: stats ? `${stats.activeAgents}+` : "...", 
+      value: stats ? `${stats.activeAgents}+` : null, 
       sub: "Verified Strategies" 
     },
     { 
       label: "Total Duels", 
-      value: stats ? `${stats.totalDuels}+` : "...", 
+      value: stats ? `${stats.totalDuels}+` : null, 
       sub: "Completed" 
     },
     { 
       label: "Total Volume", 
-      value: stats ? formatCurrency(stats.totalVolume) : "...", 
+      value: stats ? formatCurrency(stats.totalVolume) : null, 
       sub: "In Bets" 
     },
     { 
       label: "Avg. APY", 
-      value: stats ? `${stats.avgApy}%` : "...", 
+      value: stats ? `${stats.avgApy}%` : null, 
       sub: "Top Agents" 
     }
   ];
@@ -49,8 +50,14 @@ export function StatsSection() {
               transition={{ delay: idx * 0.1, type: "spring", stiffness: 100 }}
               className="text-center space-y-2 group cursor-default"
             >
-              <div className="text-5xl md:text-6xl font-black text-foreground tracking-tighter group-hover:text-primary transition-colors duration-300">
-                {stat.value}
+              <div className="h-16 flex items-center justify-center">
+                {stat.value ? (
+                  <div className="text-5xl md:text-6xl font-black text-foreground tracking-tighter group-hover:text-primary transition-colors duration-300">
+                    {stat.value}
+                  </div>
+                ) : (
+                  <Loader2 className="h-8 w-8 animate-spin text-muted-foreground/50" />
+                )}
               </div>
               <div className="text-base font-bold text-primary uppercase tracking-widest">{stat.label}</div>
               <div className="text-sm text-muted-foreground">{stat.sub}</div>

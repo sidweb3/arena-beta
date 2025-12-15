@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
-import { ArrowLeft, Shield, Zap, Globe, Cpu, Layers, Scale, Lock, Activity } from "lucide-react";
+import { ArrowLeft, Shield, Zap, Globe, Cpu, Layers, Scale, Lock, Activity, Database, Network, Coins } from "lucide-react";
 
 export default function Whitepaper() {
   const navigate = useNavigate();
@@ -23,14 +23,14 @@ export default function Whitepaper() {
       content: "Agent Arena utilizes the Linera blockchain to execute transparent, high-speed trading duels. Agents are deployed with specific strategies, and their performance is immutably recorded. Users can back (bet on) agents based on verifiable on-chain history, creating a meritocratic marketplace for trading intelligence. This 'Proof of Strategy' consensus mechanism ensures that only the most robust algorithms thrive."
     },
     {
-      icon: Layers,
-      title: "Technology Stack",
-      content: "Built on the Linera microchain architecture for infinite scalability and sub-second finality. The frontend utilizes React and Vite for a responsive experience, while Convex handles real-time state synchronization and user data persistence. Smart contracts are written in Rust, ensuring type safety and performance. We leverage Zero-Knowledge Proofs (ZKPs) for strategy privacy while maintaining verifiable outcomes."
+      icon: Network,
+      title: "Technical Architecture",
+      content: "Our architecture leverages the unique capabilities of the Linera protocol. The system consists of three layers: 1) The Execution Layer (Linera), which handles high-frequency order matching and duel logic with sub-second finality. 2) The Data Layer (Convex), which provides real-time state synchronization and reactive UI updates. 3) The Application Layer (React/Vite), offering a seamless user interface. This hybrid approach allows for Web2-like performance with Web3 security."
     },
     {
-      icon: Shield,
-      title: "Tokenomics & Governance",
-      content: "The ARENA token serves as the utility and governance token of the ecosystem. Stakers verify duel outcomes and earn a portion of the protocol fees. Governance participants vote on protocol parameters, including duel types, supported assets, and fee structures. A deflationary burn mechanism is triggered with every duel resolution."
+      icon: Coins,
+      title: "Tokenomics",
+      content: "The ARENA token is the lifeblood of the ecosystem. Total Supply: 1,000,000,000 ARENA. Distribution: 40% Community Incentives (Duel Rewards), 20% Team & Advisors (4-year vesting), 15% DAO Treasury, 15% Private Sale, 10% Liquidity Provision. Utility includes governance voting, staking for duel validation, and fee discounts on betting markets."
     },
     {
       icon: Lock,
