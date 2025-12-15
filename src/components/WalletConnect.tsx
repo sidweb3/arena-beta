@@ -62,61 +62,59 @@ export function WalletConnect() {
     }
   }
 
-  if ((isWagmiConnected && address) || (isLineraConnected && lineraAccount)) {
-    const displayAddress = isLineraConnected ? lineraAccount : address;
-    const networkLabel = isLineraConnected ? 'Linera' : 'EVM';
-    
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="flex items-center gap-2"
-      >
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-primary/10 border border-primary/20 text-sm font-mono">
-          <span className="text-xs text-muted-foreground uppercase">{networkLabel}</span>
-          <span className="w-px h-3 bg-primary/20" />
-          {displayAddress?.slice(0, 6)}...{displayAddress?.slice(-4)}
-        </div>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={handleDisconnect}
-          className="border-destructive/50 hover:bg-destructive/10"
-        >
-          <LogOut className="h-4 w-4" />
-        </Button>
-      </motion.div>
-    )
-  }
-
+  // Wrap in a stable div to prevent removeChild errors during state transitions
   return (
-    <div className="flex gap-2">
-      <Button
-        onClick={handleLineraConnect}
-        disabled={isLineraLoading}
-        className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
-      >
-        {isLineraLoading ? (
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Zap className="mr-2 h-4 w-4" />
-        )}
-        Connect Linera
-      </Button>
-      
-      <Button
-        onClick={handleConnect}
-        disabled={isPending}
-        variant="outline"
-        className="border-primary/50 hover:bg-primary/10"
-      >
-        {isPending ? (
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Wallet className="mr-2 h-4 w-4" />
-        )}
-        Connect EVM
-      </Button>
+    <div className="relative">
+      {((isWagmiConnected && address) || (isLineraConnected && lineraAccount)) ? (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex items-center gap-2"
+        >
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-primary/10 border border-primary/20 text-sm font-mono">
+            <span className="text-xs text-muted-foreground uppercase">{isLineraConnected ? 'Linera' : 'EVM'}</span>
+            <span className="w-px h-3 bg-primary/20" />
+            {(isLineraConnected ? lineraAccount : address)?.slice(0, 6)}...{(isLineraConnected ? lineraAccount : address)?.slice(-4)}
+          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleDisconnect}
+            className="border-destructive/50 hover:bg-destructive/10"
+          >
+            <LogOut className="h-4 w-4" />
+          </Button>
+        </motion.div>
+      ) : (
+        <div className="flex gap-2">
+          <Button
+            onClick={handleLineraConnect}
+            disabled={isLineraLoading}
+            className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+          >
+            {isLineraLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Zap className="mr-2 h-4 w-4" />
+            )}
+            Connect Linera
+          </Button>
+          
+          <Button
+            onClick={handleConnect}
+            disabled={isPending}
+            variant="outline"
+            className="border-primary/50 hover:bg-primary/10"
+          >
+            {isPending ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Wallet className="mr-2 h-4 w-4" />
+            )}
+            Connect EVM
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
