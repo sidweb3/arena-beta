@@ -2,11 +2,13 @@
 
 mod state;
 
-use self::state::{AgentArena, Duel, DuelStatus, Bet, Participant};
-use linera_sdk::base::{SessionId, WithContractAbi};
-use linera_sdk::views::{View, RootView};
-use linera_sdk::{Contract, ContractRuntime};
-use serde::{Deserialize, Serialize};
+use self::state::AgentArena;
+use agent_arena::{AgentArenaAbi, Operation, AgentArenaResponse};
+use async_trait::async_trait;
+use linera_sdk::{
+    base::WithContractAbi,
+    Contract, ContractRuntime, ViewStateStorage,
+};
 
 pub struct AgentArenaContract {
     state: AgentArena,
@@ -15,81 +17,62 @@ pub struct AgentArenaContract {
 
 linera_sdk::contract!(AgentArenaContract);
 
-#[derive(Deserialize, Serialize)]
-pub enum Operation {
-    CreateDuel {
-        type_: String,
-        participants: Vec<Participant>,
-        market_event: String,
-    },
-    PlaceBet {
-        duel_id: String,
-        amount: f64,
-        prediction: String,
-        bettor: String,
-    },
-    ResolveDuel {
-        duel_id: String,
-        winner_id: String,
-    },
+impl WithContractAbi for AgentArenaContract {
+    type Abi = AgentArenaAbi;
 }
 
-#[derive(Deserialize, Serialize)]
-pub enum Message {
-    // Cross-chain messages if needed
-}
-
+#[async_trait]
 impl Contract for AgentArenaContract {
-    type Message = Message;
-    type InstantiationArgument = ();
-    type Parameters = ();
+    type Error = String;
+    type Storage = ViewStateStorage<Self>;
 
-    async fn load(runtime: ContractRuntime<Self>) -> Self {
-        // In a real app, you would load state from ViewStorage
-        // For this template, we use a simple in-memory state structure
-        AgentArenaContract { 
-            state: AgentArena::default(), 
-            runtime 
-        }
+    async fn new(state: AgentArena, runtime: ContractRuntime<Self>) -> Self {
+        AgentArenaContract { state, runtime }
     }
 
-    async fn instantiate(&mut self, _argument: Self::InstantiationArgument) {
-        // Initialization logic
+    fn state_mut(&mut self) -> &mut Self::State {
+        &mut self.state
     }
 
-    async fn execute_operation(&mut self, operation: Self::Operation) -> Self::Response {
+    async fn initialize(
+        &mut self,
+        _argument: Self::InitializationArgument,
+    ) -> Result<(), Self::Error> {
+        Ok(())
+    }
+
+    async fn execute_operation(
+        &mut self,
+        operation: Self::Operation,
+    ) -> Result<Self::Response, Self::Error> {
         match operation {
-            Operation::CreateDuel { type_, participants, market_event } => {
-                let duel_id = format!("duel_{}", self.runtime.system_time().micros());
-                let duel = Duel {
-                    id: duel_id.clone(),
-                    creator: self.runtime.authenticated_signer().map(|s| s.to_string()).unwrap_or_default(),
-                    participants,
-                    market_event,
-                    status: DuelStatus::Waiting,
-                    bets: Vec::new(),
-                };
-                self.state.duels.insert(duel_id, duel);
-            },
-            Operation::PlaceBet { duel_id, amount, prediction, bettor } => {
-                if let Some(duel) = self.state.duels.get_mut(&duel_id) {
-                    let bet = Bet {
-                        bettor,
-                        amount,
-                        prediction,
-                    };
-                    duel.bets.push(bet);
-                }
-            },
+            Operation::CreateDuel { duel } => {
+                self.state.duels.insert(&duel.id, duel)?;
+            }
+            Operation::PlaceBet { duel_id, bet } => {
+                let mut bets = self.state.bets.get(&duel_id).await?.unwrap_or_default();
+                bets.push(bet);
+                self.state.bets.insert(&duel_id, bets)?;
+            }
             Operation::ResolveDuel { duel_id, winner_id } => {
-                 if let Some(duel) = self.state.duels.get_mut(&duel_id) {
-                    duel.status = DuelStatus::Resolved { winner_id };
-                    // Logic to payout would go here (transfer tokens)
-                 }
+                if let Some(mut duel) = self.state.duels.get(&duel_id).await? {
+                    duel.status = "resolved".to_string();
+                    duel.winner_id = Some(winner_id);
+                    self.state.duels.insert(&duel_id, duel)?;
+                }
             }
         }
-        Self::Response::default()
+        Ok(AgentArenaResponse)
     }
 
-    async fn execute_message(&mut self, _message: Self::Message) { }
+    async fn execute_message(
+        &mut self,
+        _message: Self::Message,
+    ) -> Result<(), Self::Error> {
+        Ok(())
+    }
+
+    async fn store(mut self) {
+        self.state.save().await.expect("Failed to save state");
+    }
 }

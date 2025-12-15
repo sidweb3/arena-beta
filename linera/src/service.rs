@@ -3,8 +3,12 @@
 mod state;
 
 use self::state::AgentArena;
-use async_graphql::{EmptySubscription, Object, Schema};
-use linera_sdk::{base::WithServiceAbi, Service, ServiceRuntime};
+use agent_arena::{AgentArenaAbi, Duel, Bet};
+use async_trait::async_trait;
+use linera_sdk::{
+    base::WithServiceAbi,
+    Service, ServiceRuntime, ViewStateStorage,
+};
 use std::sync::Arc;
 
 pub struct AgentArenaService {
@@ -14,20 +18,30 @@ pub struct AgentArenaService {
 
 linera_sdk::service!(AgentArenaService);
 
-impl Service for AgentArenaService {
-    type Parameters = ();
+impl WithServiceAbi for AgentArenaService {
+    type Abi = AgentArenaAbi;
+}
 
-    async fn new(runtime: ServiceRuntime<Self>) -> Self {
-        // Load state (mock for now as service is read-only view)
-        AgentArenaService {
-            state: Arc::new(AgentArena::default()),
-            runtime,
-        }
+#[async_trait]
+impl Service for AgentArenaService {
+    type Error = String;
+    type Storage = ViewStateStorage<Self>;
+
+    async fn new(state: Arc<AgentArena>, runtime: ServiceRuntime<Self>) -> Self {
+        AgentArenaService { state, runtime }
     }
 
-    async fn handle_query(&self, query: linera_sdk::views::Request) -> linera_sdk::views::Response {
-        let schema = Schema::build(QueryRoot { state: self.state.clone() }, EmptyMutation, EmptySubscription).finish();
-        schema.execute(query).await
+    async fn handle_query(
+        &self,
+        query: Self::Query,
+    ) -> Result<Self::Response, Self::Error> {
+        let schema = async_graphql::Schema::build(
+            QueryRoot { state: self.state.clone() },
+            MutationRoot,
+            async_graphql::EmptySubscription,
+        )
+        .finish();
+        Ok(schema.execute(query).await)
     }
 }
 
@@ -35,13 +49,22 @@ struct QueryRoot {
     state: Arc<AgentArena>,
 }
 
-#[Object]
+#[async_graphql::Object]
 impl QueryRoot {
-    async fn duel(&self, id: String) -> Option<state::Duel> {
-        self.state.duels.get(&id).cloned()
+    async fn duel(&self, id: String) -> Option<Duel> {
+        self.state.duels.get(&id).await.ok().flatten()
+    }
+    
+    async fn bets(&self, duel_id: String) -> Vec<Bet> {
+        self.state.bets.get(&duel_id).await.ok().flatten().unwrap_or_default()
     }
 }
 
-struct EmptyMutation;
-#[Object]
-impl EmptyMutation {}
+struct MutationRoot;
+
+#[async_graphql::Object]
+impl MutationRoot {
+    async fn ping(&self) -> String {
+        "pong".to_string()
+    }
+}
