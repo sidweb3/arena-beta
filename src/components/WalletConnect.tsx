@@ -63,21 +63,13 @@ export function WalletConnect() {
     }
   }
 
+  const isConnected = (isWagmiConnected && address) || (isLineraConnected && lineraAccount);
+
   // Wrap in a stable div to prevent removeChild errors during state transitions
   return (
-    <div className="relative">
-      {((isWagmiConnected && address) || (isLineraConnected && lineraAccount)) ? (
-        <div
-          key="connected"
-          className="flex items-center gap-2"
-        >
->>>>>>> REPLACE
-<<<<<<< SEARCH
-      ) : (
-        <div className="flex gap-2">
-=======
-      ) : (
-        <div key="disconnected" className="flex gap-2">
+    <div className="relative min-w-[140px] flex justify-end items-center">
+      {isConnected ? (
+        <div key="connected" className="flex items-center gap-2 animate-in fade-in duration-200">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-primary/10 border border-primary/20 text-sm font-mono">
             <span className="text-xs text-muted-foreground uppercase">{isLineraConnected ? 'Linera' : 'EVM'}</span>
             {isLineraConnected && isLineraMock && (
@@ -96,7 +88,7 @@ export function WalletConnect() {
           </Button>
         </div>
       ) : (
-        <div className="flex gap-2">
+        <div key="disconnected" className="flex gap-2 animate-in fade-in duration-200">
           <Button
             onClick={handleLineraConnect}
             disabled={isLineraLoading}
@@ -125,9 +117,10 @@ export function WalletConnect() {
           </Button>
         </div>
       )}
+      
       {/* Helper Note */}
-      {!((isWagmiConnected && address) || (isLineraConnected && lineraAccount)) && (
-        <div className="absolute -bottom-6 left-0 right-0 text-[10px] text-center text-muted-foreground opacity-70">
+      {!isConnected && (
+        <div className="absolute -bottom-6 left-0 right-0 text-[10px] text-center text-muted-foreground opacity-70 pointer-events-none">
           Supports Linera & EVM Wallets
         </div>
       )}
