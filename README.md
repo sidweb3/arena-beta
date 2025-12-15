@@ -1,25 +1,70 @@
-## Overview
+# ARENA-X 🎯⚔️
 
-This project uses the following tech stack:
-- Vite
-- Typescript
-- React Router v7 (all imports from `react-router` instead of `react-router-dom`)
-- React 19 (for frontend components)
-- Tailwind v4 (for styling)
-- Shadcn UI (for UI components library)
-- Lucide Icons (for icons)
-- Convex (for backend & database)
-- Convex Auth (for authentication)
-- Framer Motion (for animations)
-- Three js (for 3d models)
+<div align="center">
+  <img src="public/arenalogo.png" alt="ARENA-X Logo" width="200"/>
+  
+  ### The Future of Algorithmic Warfare
+  
+  *Witness autonomous AI agents compete in high-frequency trading duels on the Linera blockchain*
+
+  [![Built with Convex](https://img.shields.io/badge/Built%20with-Convex-orange)](https://convex.dev)
+  [![Powered by Linera](https://img.shields.io/badge/Powered%20by-Linera-blue)](https://linera.io)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+</div>
+
+---
+
+## 🌟 Overview
+
+**ARENA-X** is a revolutionary Web3 DeFi platform that brings together AI trading agents in verifiable, on-chain duels. Built on the Linera blockchain for infinite scalability and sub-second finality, ARENA-X creates a trustless environment where algorithmic strategies compete in real-time.
+
+### Key Features
+
+- 🤖 **AI Trading Duels** - Watch autonomous agents battle in real-time trading competitions
+- ⚡ **Instant Betting** - Place bets on your favorite agents with sub-second finality
+- 🏆 **Leaderboards** - Track top performing agents on our immutable global leaderboard
+- 📊 **Live Markets** - Real market events drive competition outcomes with oracle verification
+- 🔒 **Trustless Execution** - Every duel and bet executed via smart contracts
+- 🌐 **Dual Wallet Support** - Connect with both Linera and EVM-compatible wallets
+
+---
+
+## 🚀 Tech Stack
+
+### Frontend
+- **React 19** - Modern UI framework
+- **Vite** - Lightning-fast build tool
+- **TypeScript** - Type-safe development
+- **Tailwind CSS v4** - Utility-first styling
+- **Shadcn UI** - Beautiful component library
+- **Framer Motion** - Smooth animations
+- **React Router v7** - Client-side routing
+
+### Backend & Blockchain
+- **Convex** - Real-time backend and database
+- **Linera** - High-performance blockchain (Rust smart contracts)
+- **Wagmi** - EVM wallet integration
+- **Web3Modal** - Multi-wallet support
+
+### Authentication
+- **Convex Auth** - Email OTP and anonymous access
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+- Node.js 18+ and pnpm
+- Rust toolchain (for Linera contracts)
+- Convex account
+
+### Setup
+
+1. **Clone the repository**
 
 All relevant files live in the 'src' directory.
 
 Use pnpm for the package manager.
-
-## Setup
-
-This project is set up already and running on a cloud environment, as well as a convex development in the sandbox.
 
 ## Environment Variables
 
@@ -28,7 +73,6 @@ The project is set up with project specific CONVEX_DEPLOYMENT and VITE_CONVEX_UR
 The convex server has a separate set of environment variables that are accessible by the convex backend.
 
 Currently, these variables include auth-specific keys: JWKS, JWT_PRIVATE_KEY, and SITE_URL.
-
 
 # Using Authentication (Important!)
 
@@ -101,7 +145,6 @@ Follow these conventions when using Shad CN components, which you should use by 
 - AVOID SHADOWS. Avoid adding any shadows to components. stick with a thin border without the shadow.
 - Avoid skeletons; instead, use the loader2 component to show a spinning loading state when loading data.
 
-
 ## Landing Pages
 
 You must always create good-looking designer-level styles to your application. 
@@ -127,7 +170,6 @@ You must add animations to components using Framer Motion. It is already install
 
 To use it, import the `motion` component from `framer-motion` and use it to wrap the component you want to animate.
 
-
 ### Other Items to animate
 - Fade in and Fade Out
 - Slide in and Slide Out animations
@@ -139,7 +181,6 @@ Animate for all components, including on landing page and app pages.
 ## Three JS Graphics
 
 Your app comes with three js by default. You can use it to create 3D graphics for landing pages, games, etc.
-
 
 ## Colors
 
@@ -214,7 +255,6 @@ The schema is defined in `src/convex/schema.ts`.
 Do not include the `_id` and `_creationTime` fields in your queries (it is included by default for each table).
 Do not index `_creationTime` as it is indexed for you. Never have duplicate indexes.
 
-
 ## Convex Actions: Using CRUD operations
 
 When running anything that involves external connections, you must use a convex action with "use node" at the top of the file.
@@ -240,7 +280,6 @@ await ctx.runMutation(internal.users.update, {
   },
 });
 ```
-
 
 ## Common Convex Mistakes To Avoid
 
