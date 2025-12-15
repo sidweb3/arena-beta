@@ -31,14 +31,7 @@ export async function executeContract(applicationId: string, operation: any) {
   console.log("Executing contract:", applicationId, operation);
   
   if (!window.linera) {
-    console.warn("Linera wallet not found. Executing mock transaction for testing.");
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    return { 
-      status: 'success', 
-      logs: ['Mock transaction executed'],
-      blockHeight: 12345,
-      transactionIndex: 0
-    };
+    throw new Error("Linera wallet not found. Please install the Linera wallet extension to execute transactions.");
   }
 
   // Construct the GraphQL mutation for the Linera node/wallet

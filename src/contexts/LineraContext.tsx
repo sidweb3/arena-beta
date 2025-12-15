@@ -63,21 +63,14 @@ export function LineraProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      // Fallback to mock if no provider found (for dev/demo)
-      // Simulating connection for UI feedback
-      console.warn("Linera wallet not found. Falling back to mock connection.");
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock data for now
-      const mockAccount = "linera:" + Math.random().toString(36).substring(7);
-      setAccount(mockAccount);
-      setChainId("linera-testnet");
-      setIsConnected(true);
-      setIsMock(true);
+      // If we get here, no provider was found or connection failed
+      throw new Error("Linera wallet not found. Please install the Linera wallet extension.");
       
     } catch (err) {
       console.error("Failed to connect to Linera:", err);
       setError(err instanceof Error ? err.message : "Failed to connect to Linera wallet");
+      setIsConnected(false);
+      setIsMock(false);
     } finally {
       setIsLoading(false);
     }
