@@ -12,11 +12,14 @@ import { useNavigate } from "react-router";
 import { Swords, Bot, Trophy } from "lucide-react";
 import { useAccount } from "wagmi";
 import type { Doc } from "@/convex/_generated/dataModel";
+import { useLinera } from "@/contexts/LineraContext";
 
 export default function Arena() {
   console.log("Arena page loading...");
   const navigate = useNavigate();
-  const { isConnected } = useAccount();
+  const { isConnected: isWagmiConnected } = useAccount();
+  const { isConnected: isLineraConnected } = useLinera();
+  const isConnected = isWagmiConnected || isLineraConnected;
   const [activeTab, setActiveTab] = useState("active");
   const [selectedDuel, setSelectedDuel] = useState<Doc<"duels"> | null>(null);
   const [isBetDialogOpen, setIsBetDialogOpen] = useState(false);

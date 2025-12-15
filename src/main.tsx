@@ -13,6 +13,7 @@ import "./index.css";
 import "./types/global.d.ts";
 import { WalletSync } from "./components/WalletSync";
 import Arena from "./pages/Arena.tsx";
+import { LineraProvider } from "./contexts/LineraContext";
 
 const queryClient = new QueryClient()
 
@@ -63,19 +64,21 @@ createRoot(document.getElementById("root")!).render(
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <ConvexAuthProvider client={convex}>
-            <WalletSync />
-            <BrowserRouter>
-              <RouteSyncer />
-              <Suspense fallback={<RouteLoading />}>
-                <Routes>
-                  <Route path="/" element={<Landing />} />
-                  <Route path="/arena" element={<Arena />} />
-                  <Route path="/auth" element={<AuthPage redirectAfterAuth="/arena" />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-            </BrowserRouter>
-            <Toaster />
+            <LineraProvider>
+              <WalletSync />
+              <BrowserRouter>
+                <RouteSyncer />
+                <Suspense fallback={<RouteLoading />}>
+                  <Routes>
+                    <Route path="/" element={<Landing />} />
+                    <Route path="/arena" element={<Arena />} />
+                    <Route path="/auth" element={<AuthPage redirectAfterAuth="/arena" />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Suspense>
+              </BrowserRouter>
+              <Toaster />
+            </LineraProvider>
           </ConvexAuthProvider>
         </QueryClientProvider>
       </WagmiProvider>

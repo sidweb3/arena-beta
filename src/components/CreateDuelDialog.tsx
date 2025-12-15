@@ -23,6 +23,7 @@ import { Label } from "@/components/ui/label";
 import { Plus, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
+import { useLinera } from "@/contexts/LineraContext";
 
 export function CreateDuelDialog() {
   const [open, setOpen] = useState(false);
@@ -32,7 +33,10 @@ export function CreateDuelDialog() {
   const [selectedAgent2, setSelectedAgent2] = useState("");
   const [marketEvent, setMarketEvent] = useState("BTC > 65000");
 
-  const { address } = useAccount();
+  const { address: wagmiAddress } = useAccount();
+  const { account: lineraAccount } = useLinera();
+  const address = wagmiAddress || lineraAccount;
+
   const agents = useQuery(api.agents.listAgents);
   const createDuel = useMutation(api.duels.createDuel);
 

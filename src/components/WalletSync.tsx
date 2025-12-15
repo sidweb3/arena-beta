@@ -2,19 +2,26 @@ import { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
+import { useLinera } from '@/contexts/LineraContext';
 
 export function WalletSync() {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected: isWagmiConnected } = useAccount();
+  const { account: lineraAccount, isConnected: isLineraConnected } = useLinera();
   const storeUser = useMutation(api.users.storeUser);
 
   useEffect(() => {
-    if (isConnected && address) {
+    if (isWagmiConnected && address) {
       storeUser({
         walletAddress: address,
         name: `User ${address.slice(0, 6)}`,
       }).catch(console.error);
+    } else if (isLineraConnected && lineraAccount) {
+      storeUser({
+        walletAddress: lineraAccount,
+        name: `Linera User ${lineraAccount.slice(0, 6)}`,
+      }).catch(console.error);
     }
-  }, [isConnected, address, storeUser]);
+  }, [isWagmiConnected, address, isLineraConnected, lineraAccount, storeUser]);
 
   return null;
 }

@@ -22,6 +22,7 @@ import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
+import { useLinera } from "@/contexts/LineraContext";
 import type { Doc, Id } from "@/convex/_generated/dataModel";
 
 interface PlaceBetDialogProps {
@@ -35,7 +36,10 @@ export function PlaceBetDialog({ open, onOpenChange, duel }: PlaceBetDialogProps
   const [amount, setAmount] = useState("10");
   const [prediction, setPrediction] = useState("");
   
-  const { address } = useAccount();
+  const { address: wagmiAddress } = useAccount();
+  const { account: lineraAccount } = useLinera();
+  const address = wagmiAddress || lineraAccount;
+
   const placeBet = useMutation(api.duels.placeBet);
 
   const handleBet = async () => {
