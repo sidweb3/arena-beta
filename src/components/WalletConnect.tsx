@@ -87,6 +87,22 @@ export function WalletConnect() {
           </div>
           <Button
             variant="outline"
+            size="sm"
+            onClick={() => {
+              handleDisconnect();
+              // Trigger connection to the other wallet type
+              if (isLineraConnected) {
+                setTimeout(() => handleConnect(), 100);
+              } else {
+                setTimeout(() => handleLineraConnect(), 100);
+              }
+            }}
+            className="h-8 px-3 text-xs border-primary/30 hover:bg-primary/5"
+          >
+            Switch to {isLineraConnected ? 'EVM' : 'Linera'}
+          </Button>
+          <Button
+            variant="outline"
             size="icon"
             onClick={handleDisconnect}
             className="border-destructive/50 hover:bg-destructive/10"
