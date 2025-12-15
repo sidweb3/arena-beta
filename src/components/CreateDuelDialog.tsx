@@ -24,6 +24,9 @@ import { Plus, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
 import { useLinera } from "@/contexts/LineraContext";
+import { useLineraContract } from "@/hooks/useLineraContract";
+
+const LINERA_APP_ID = import.meta.env.VITE_LINERA_APP_ID || "e476187f6ddfeb9d588c7b45d3df334d5501d6499b3f9ad5595cae86cce16a6501360434d5a27b1b353fa994d152ee571263558e9d818457a4752d18d3d4477600";
 
 export function CreateDuelDialog() {
   const [open, setOpen] = useState(false);
@@ -37,6 +40,7 @@ export function CreateDuelDialog() {
   const { account: lineraAccount } = useLinera();
   const address = wagmiAddress || lineraAccount;
 
+  const { mutate: lineraMutate } = useLineraContract(LINERA_APP_ID);
   const agents = useQuery(api.agents.listAgents);
   const createDuel = useMutation(api.duels.createDuel);
 
@@ -85,11 +89,34 @@ export function CreateDuelDialog() {
         });
       }
 
-      await createDuel({
-        type,
-        participants,
-        marketEvent,
-      });
+      if (lineraAccount) {
+        // Execute on Linera
+        await lineraMutate({
+          CreateDuel: {
+            type,
+            participants: participants.map(p => ({
+              id: p.id,
+              name: p.name,
+              is_agent: p.type === 'agent'
+            })),
+            market_event: marketEvent,
+          }
+        });
+        
+        // Also sync to Convex for UI display
+        await createDuel({
+          type,
+          participants,
+          marketEvent,
+        });
+      } else {
+        // EVM / Standard execution
+        await createDuel({
+          type,
+          participants,
+          marketEvent,
+        });
+      }
 
       toast.success("Duel created successfully!");
       setOpen(false);

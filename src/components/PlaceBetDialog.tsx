@@ -23,7 +23,10 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
 import { useLinera } from "@/contexts/LineraContext";
+import { useLineraContract } from "@/hooks/useLineraContract";
 import type { Doc, Id } from "@/convex/_generated/dataModel";
+
+const LINERA_APP_ID = import.meta.env.VITE_LINERA_APP_ID || "e476187f6ddfeb9d588c7b45d3df334d5501d6499b3f9ad5595cae86cce16a6501360434d5a27b1b353fa994d152ee571263558e9d818457a4752d18d3d4477600";
 
 interface PlaceBetDialogProps {
   open: boolean;
@@ -40,6 +43,7 @@ export function PlaceBetDialog({ open, onOpenChange, duel }: PlaceBetDialogProps
   const { account: lineraAccount } = useLinera();
   const address = wagmiAddress || lineraAccount;
 
+  const { mutate: lineraMutate } = useLineraContract(LINERA_APP_ID);
   const placeBet = useMutation(api.duels.placeBet);
 
   const handleBet = async () => {
@@ -54,12 +58,34 @@ export function PlaceBetDialog({ open, onOpenChange, duel }: PlaceBetDialogProps
 
     setIsLoading(true);
     try {
-      await placeBet({
-        duelId: duel._id,
-        bettorWallet: address,
-        amount: parseFloat(amount),
-        prediction,
-      });
+      if (lineraAccount) {
+        // Execute on Linera
+        await lineraMutate({
+          PlaceBet: {
+            duel_id: duel._id,
+            amount: parseFloat(amount),
+            prediction,
+            bettor: lineraAccount
+          }
+        });
+
+        // Sync to Convex for UI
+        await placeBet({
+          duelId: duel._id,
+          bettorWallet: address,
+          amount: parseFloat(amount),
+          prediction,
+        });
+      } else {
+        // EVM / Standard execution
+        await placeBet({
+          duelId: duel._id,
+          bettorWallet: address,
+          amount: parseFloat(amount),
+          prediction,
+        });
+      }
+
       toast.success("Bet placed successfully!");
       onOpenChange(false);
     } catch (error) {
