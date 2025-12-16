@@ -43,7 +43,11 @@ export function LineraProvider({ children }: { children: ReactNode }) {
       console.log("Attempting to connect to CheCko wallet...");
       if ((window as any).checko) {
         try {
+          // Request accounts from CheCko
+          // Note: CheCko might use a different method signature, but we'll assume standard Linera provider compatibility
+          // or the specific 'linera_accounts' method if documented
           const accounts = await (window as any).checko.request({ method: 'linera_accounts' });
+          
           if (accounts && accounts.length > 0) {
             setAccount(accounts[0]);
             setChainId("linera-mainnet"); 
@@ -59,7 +63,10 @@ export function LineraProvider({ children }: { children: ReactNode }) {
           toast.error("Failed to connect to CheCko Wallet");
         }
       } else {
-        toast.info("CheCko Wallet not detected. Integration coming soon!");
+        // If CheCko is not detected, we can prompt the user to install it
+        // For now, we'll show the info toast
+        toast.info("CheCko Wallet not detected. Please install the extension.");
+        window.open("https://checko.wallet", "_blank"); // Placeholder URL
       }
       setIsLoading(false);
       return;

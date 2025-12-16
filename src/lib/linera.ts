@@ -22,6 +22,17 @@ export function isValidLineraAddress(address: string): boolean {
 }
 
 /**
+ * Helper to get the active provider (CheCko or Linera)
+ */
+function getProvider() {
+  if (typeof window === 'undefined') return null;
+  // Prioritize CheCko if available
+  if ((window as any).checko) return (window as any).checko;
+  if ((window as any).linera) return (window as any).linera;
+  return null;
+}
+
+/**
  * Executes a mutation operation on a Linera application
  * @param applicationId The ID of the application to interact with
  * @param operation The operation payload (usually a JSON object or string)
@@ -30,7 +41,9 @@ export function isValidLineraAddress(address: string): boolean {
 export async function executeContract(applicationId: string, operation: any) {
   console.log("Executing contract:", applicationId, operation);
   
-  if (!window.linera) {
+  const provider = getProvider();
+
+  if (!provider) {
     // Realistic Mock Execution
     console.log("Mocking contract execution on simulated network...");
     
@@ -60,7 +73,7 @@ export async function executeContract(applicationId: string, operation: any) {
     // Request the wallet to execute the operation
     // We use 'linera_graphqlMutation' as the method, which is standard for some Linera wallets
     // If the wallet uses a different standard, this might need adjustment
-    const result = await window.linera.request({
+    const result = await provider.request({
       method: 'linera_graphqlMutation',
       params: {
         query: mutation,
@@ -87,10 +100,12 @@ export async function executeContract(applicationId: string, operation: any) {
 export async function queryContract(applicationId: string, query: string) {
   console.log("Querying contract:", applicationId, query);
 
+  const provider = getProvider();
+
   // Try using the wallet first if available
-  if (window.linera) {
+  if (provider) {
     try {
-      return await window.linera.request({
+      return await provider.request({
         method: 'linera_graphqlQuery',
         params: {
           query,
@@ -103,7 +118,7 @@ export async function queryContract(applicationId: string, query: string) {
   }
 
   // Mock query response if no wallet/node available
-  if (!window.linera && LINERA_CONFIG.nodeUrl.includes("localhost")) {
+  if (!provider && LINERA_CONFIG.nodeUrl.includes("localhost")) {
      console.log("Returning mock query response");
      // Simulate dynamic state changes
      const mockBlockHeight = Math.floor(Date.now() / 10000); 

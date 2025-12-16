@@ -1,6 +1,6 @@
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { Button } from '@/components/ui/button'
-import { Wallet, LogOut, Loader2, Zap, Info, ChevronDown } from 'lucide-react'
+import { Wallet, LogOut, Loader2, Zap, Info, ChevronDown, ShieldCheck } from 'lucide-react'
 import { toast } from 'sonner'
 import { useEffect, useState } from 'react'
 import { useLinera, LineraWalletType } from '@/contexts/LineraContext'
@@ -92,6 +92,9 @@ export function WalletConnect() {
               {isLineraConnected && isLineraMock && (
                 <Badge variant="secondary" className="h-4 px-1 text-[10px]">MOCK</Badge>
               )}
+              {isLineraConnected && walletType === 'checko' && (
+                <Badge variant="default" className="h-4 px-1 text-[10px] bg-blue-600 hover:bg-blue-700">CheCko</Badge>
+              )}
               <span className="w-px h-3 bg-primary/20" />
               {(isLineraConnected ? lineraAccount : address)?.slice(0, 6)}...{(isLineraConnected ? lineraAccount : address)?.slice(-4)}
             </div>
@@ -104,12 +107,12 @@ export function WalletConnect() {
                 if (isLineraConnected) {
                   setTimeout(() => handleConnect(), 100);
                 } else {
-                  setTimeout(() => handleLineraConnect(), 100);
+                  setTimeout(() => handleLineraConnect('checko'), 100);
                 }
               }}
               className="h-8 px-3 text-xs border-primary/30 hover:bg-primary/5"
             >
-              Switch to {isLineraConnected ? 'EVM' : 'Linera'}
+              Switch to {isLineraConnected ? 'EVM' : 'CheCko'}
             </Button>
             <Button
               variant="outline"
@@ -122,29 +125,40 @@ export function WalletConnect() {
           </div>
         ) : (
           <div key="disconnected" className="flex gap-2">
+            <div className="relative">
+              <Button
+                onClick={() => handleLineraConnect('checko')}
+                disabled={isLineraLoading}
+                className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(0,255,136,0.3)] border border-primary/50"
+              >
+                {isLineraLoading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <ShieldCheck className="mr-2 h-4 w-4" />
+                )}
+                Connect CheCko
+              </Button>
+              <Badge className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] px-1.5 py-0 h-5 shadow-md animate-pulse">
+                Recommended
+              </Badge>
+            </div>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
+                  variant="outline"
                   disabled={isLineraLoading}
-                  className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                  className="border-primary/20 hover:bg-primary/5"
                 >
-                  {isLineraLoading ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  ) : (
-                    <Zap className="mr-2 h-4 w-4" />
-                  )}
-                  Connect Linera
+                  <Zap className="mr-2 h-4 w-4" />
+                  Other
                   <ChevronDown className="ml-2 h-4 w-4 opacity-50" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem onClick={() => handleLineraConnect('default')} className="cursor-pointer">
                   <Zap className="mr-2 h-4 w-4" />
-                  <span>Default / Injected</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleLineraConnect('checko')} className="cursor-pointer">
-                  <span className="mr-2 h-4 w-4 flex items-center justify-center font-bold text-xs border rounded-full">C</span>
-                  <span>CheCko Wallet</span>
+                  <span>Linera Default</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleLineraConnect('croissant')} className="cursor-pointer">
                   <span className="mr-2 h-4 w-4 flex items-center justify-center font-bold text-xs border rounded-full">🥐</span>
@@ -158,18 +172,15 @@ export function WalletConnect() {
                 onClick={handleConnect}
                 disabled={isPending}
                 variant="outline"
-                className="border-primary/50 hover:bg-primary/10"
+                className="border-primary/20 hover:bg-primary/5 opacity-80 hover:opacity-100"
               >
                 {isPending ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
                   <Wallet className="mr-2 h-4 w-4" />
                 )}
-                Connect EVM
+                EVM
               </Button>
-              <Badge className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] px-1.5 py-0 h-5 shadow-md">
-                Recommended
-              </Badge>
             </div>
           </div>
         )}
@@ -180,10 +191,7 @@ export function WalletConnect() {
         <div className="flex flex-col gap-1 text-right">
           <div className="text-[10px] text-muted-foreground opacity-70 flex items-center gap-1 justify-end">
             <Info className="h-3 w-3" />
-            <span>Supports Linera & EVM Wallets</span>
-          </div>
-          <div className="text-[9px] text-amber-500/80 flex items-center gap-1 justify-end">
-            <span>⚠️ Ensure wallet is configured for correct network</span>
+            <span>CheCko Wallet Recommended for Linera</span>
           </div>
         </div>
       )}
