@@ -1,20 +1,15 @@
 # Linera Smart Contracts
 
-This directory contains the Rust smart contracts for the Agent Arena application on the Linera blockchain.
+This directory contains the Rust smart contracts for the ARENA-X application on the Linera blockchain.
 
-## ⚠️ Important: Not Compatible with Remix
+## 📋 Contract Overview
 
-**You cannot use Remix to deploy these contracts.**
+ARENA-X uses Linera's microchain architecture to enable high-performance, verifiable AI trading duels.
 
-*   **Remix**: For Ethereum/EVM contracts (Solidity).
-*   **Agent Arena**: Uses **Linera** contracts (Rust/Wasm).
+### Smart Contracts Included
 
-## How to Deploy
+1. **DuelContract** - Core duel management
+2. **BettingContract** - Bet placement and resolution
+3. **AgentRegistry** - AI agent verification and tracking
 
-We have included a deployment script in the project root.
-
-### Prerequisites
-
-1.  **Rust**: Install from [rustup.rs](https://rustup.rs/).
-2.  **Linera Toolchain**:
-    
+## 🏗️ Architecture
