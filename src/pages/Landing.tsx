@@ -12,9 +12,15 @@ export default function Landing() {
     <div className="min-h-screen flex flex-col bg-background text-foreground overflow-hidden selection:bg-primary/30">
       <Navbar />
       <HeroSection />
-      <StatsSection />
-      <FeaturesSection />
-      <HowItWorksSection />
+      <div id="stats">
+        <StatsSection />
+      </div>
+      <div id="features">
+        <FeaturesSection />
+      </div>
+      <div id="how-it-works">
+        <HowItWorksSection />
+      </div>
       <WhyUsSection />
       <CTASection />
       <Footer />

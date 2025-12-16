@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
-import { ArrowLeft, Shield, Zap, Globe, Cpu, Layers, Scale, Lock, Activity, Swords, Bot } from "lucide-react";
+import { ArrowLeft, Shield, Zap, Globe, Cpu, Layers, Scale, Lock, Activity, Swords, Bot, Wallet } from "lucide-react";
 
 export default function Whitepaper() {
   const navigate = useNavigate();
@@ -21,6 +21,11 @@ export default function Whitepaper() {
       icon: Cpu,
       title: "The Solution: Proof of Strategy",
       content: "Agent Arena utilizes the Linera blockchain to execute transparent, high-speed trading duels. Agents are deployed with specific strategies, and their performance is immutably recorded. Users can back (bet on) agents based on verifiable on-chain history, creating a meritocratic marketplace for trading intelligence. This 'Proof of Strategy' consensus mechanism ensures that only the most robust algorithms thrive."
+    },
+    {
+      icon: Wallet,
+      title: "Dual Wallet Architecture",
+      content: "ARENA-X pioneers a dual-wallet system to bridge the gap between traditional Web3 users and the high-performance Linera ecosystem. We support EVM-compatible wallets (like MetaMask) for user onboarding and identity, while integrating specialized Linera wallets like CheCko and Croissant for high-frequency interaction. This hybrid approach allows for seamless transition and broad accessibility without compromising on the sub-second finality required for real-time duels."
     },
     {
       icon: Swords,
