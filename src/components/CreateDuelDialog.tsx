@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Loader2 } from "lucide-react";
+import { Plus, Loader2, Swords, Bot, User } from "lucide-react";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
 import { useLinera } from "@/contexts/LineraContext";
@@ -89,7 +89,6 @@ export function CreateDuelDialog() {
       }
 
       if (lineraAccount) {
-        // Execute on Linera
         await lineraMutate({
           CreateDuel: {
             type,
@@ -102,14 +101,12 @@ export function CreateDuelDialog() {
           }
         });
         
-        // Also sync to Convex for UI display
         await createDuel({
           type,
           participants,
           marketEvent,
         });
       } else {
-        // EVM / Standard execution
         await createDuel({
           type,
           participants,
@@ -129,55 +126,75 @@ export function CreateDuelDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-primary hover:bg-primary/90 shadow-[0_0_20px_rgba(0,255,136,0.3)]">
+        <Button className="bg-primary hover:bg-primary/90 shadow-[0_0_20px_rgba(0,255,136,0.3)] transition-all hover:shadow-[0_0_30px_rgba(0,255,136,0.5)]">
           <Plus className="mr-2 h-4 w-4" />
           Create Duel
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-card border-border">
+      <DialogContent className="sm:max-w-[500px] bg-card/95 backdrop-blur-xl border-border shadow-2xl">
         <DialogHeader>
-          <DialogTitle>Create New Duel</DialogTitle>
+          <DialogTitle className="text-xl flex items-center gap-2">
+            <Swords className="h-5 w-5 text-primary" />
+            Create New Duel
+          </DialogTitle>
           <DialogDescription>
-            Set up a new trading battle between agents or challenge one yourself.
+            Configure the parameters for the trading battle.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        
+        <div className="grid gap-6 py-4">
           <div className="grid gap-2">
             <Label>Duel Type</Label>
-            <Select value={type} onValueChange={(v: any) => setType(v)}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="human_vs_agent">Human vs Agent</SelectItem>
-                <SelectItem value="agent_vs_agent">Agent vs Agent</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="grid grid-cols-2 gap-4">
+              <div 
+                className={`cursor-pointer rounded-lg border-2 p-4 flex flex-col items-center gap-2 transition-all ${type === 'human_vs_agent' ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}
+                onClick={() => setType('human_vs_agent')}
+              >
+                <User className="h-6 w-6" />
+                <span className="text-sm font-medium">Human vs Agent</span>
+              </div>
+              <div 
+                className={`cursor-pointer rounded-lg border-2 p-4 flex flex-col items-center gap-2 transition-all ${type === 'agent_vs_agent' ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}
+                onClick={() => setType('agent_vs_agent')}
+              >
+                <Bot className="h-6 w-6" />
+                <span className="text-sm font-medium">Agent vs Agent</span>
+              </div>
+            </div>
           </div>
 
           {type === "human_vs_agent" ? (
             <div className="grid gap-2">
               <Label>Select Opponent</Label>
               <Select value={selectedAgent1} onValueChange={setSelectedAgent1}>
-                <SelectTrigger>
+                <SelectTrigger className="h-12">
                   <SelectValue placeholder="Choose an agent..." />
                 </SelectTrigger>
                 <SelectContent>
                   {agents?.map((agent) => (
                     <SelectItem key={agent._id} value={agent._id}>
-                      {agent.name}
+                      <div className="flex items-center gap-2">
+                        <img 
+                          src={agent.imageUrl || `https://api.dicebear.com/7.x/bottts/svg?seed=${agent.name}`} 
+                          className="w-6 h-6 rounded bg-muted"
+                        />
+                        <span>{agent.name}</span>
+                        <span className="text-xs text-muted-foreground ml-auto">
+                          {agent.wins}W / {agent.losses}L
+                        </span>
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
           ) : (
-            <>
+            <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label>Agent 1</Label>
                 <Select value={selectedAgent1} onValueChange={setSelectedAgent1}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Choose first agent..." />
+                    <SelectValue placeholder="Select..." />
                   </SelectTrigger>
                   <SelectContent>
                     {agents?.map((agent) => (
@@ -192,7 +209,7 @@ export function CreateDuelDialog() {
                 <Label>Agent 2</Label>
                 <Select value={selectedAgent2} onValueChange={setSelectedAgent2}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Choose second agent..." />
+                    <SelectValue placeholder="Select..." />
                   </SelectTrigger>
                   <SelectContent>
                     {agents?.map((agent) => (
@@ -203,7 +220,7 @@ export function CreateDuelDialog() {
                   </SelectContent>
                 </Select>
               </div>
-            </>
+            </div>
           )}
 
           <div className="grid gap-2">
@@ -212,11 +229,16 @@ export function CreateDuelDialog() {
               value={marketEvent} 
               onChange={(e) => setMarketEvent(e.target.value)}
               placeholder="e.g. BTC > 65000"
+              className="h-11 font-mono text-sm"
             />
+            <p className="text-[10px] text-muted-foreground">
+              The condition that determines the winner when resolved by the oracle.
+            </p>
           </div>
         </div>
+
         <DialogFooter>
-          <Button onClick={handleCreate} disabled={isLoading}>
+          <Button onClick={handleCreate} disabled={isLoading} className="w-full sm:w-auto">
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Create Duel
           </Button>
