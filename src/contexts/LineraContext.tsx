@@ -40,7 +40,27 @@ export function LineraProvider({ children }: { children: ReactNode }) {
     
     // Handle specific wallet types
     if (type === 'checko') {
-      toast.info("CheCko Wallet integration coming soon!");
+      console.log("Attempting to connect to CheCko wallet...");
+      if ((window as any).checko) {
+        try {
+          const accounts = await (window as any).checko.request({ method: 'linera_accounts' });
+          if (accounts && accounts.length > 0) {
+            setAccount(accounts[0]);
+            setChainId("linera-mainnet"); 
+            setWalletType('checko');
+            setIsConnected(true);
+            setIsMock(false);
+            toast.success("Connected to CheCko Wallet");
+            setIsLoading(false);
+            return;
+          }
+        } catch (e) {
+          console.error("CheCko connection failed:", e);
+          toast.error("Failed to connect to CheCko Wallet");
+        }
+      } else {
+        toast.info("CheCko Wallet not detected. Integration coming soon!");
+      }
       setIsLoading(false);
       return;
     }

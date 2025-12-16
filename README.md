@@ -127,6 +127,22 @@
 
 ---
 
+## 👛 CheCko Wallet Integration
+
+### About CheCko
+CheCko is a specialized wallet for the Linera ecosystem designed to separate the wallet client from the application logic, ensuring enhanced security and modularity.
+
+### Architecture
+- **Wallet Client Separation**: Keeps private keys isolated from the dApp layer.
+- **Linera Node Service**: Interacts directly with the Linera network nodes for transaction submission and verification.
+
+### How it Works
+CheCko injects a provider into the web page, allowing applications to request accounts and sign transactions without handling sensitive data directly.
+
+### Example Usage
+
+---
+
 ## 📦 Installation
 
 ### Prerequisites
@@ -134,6 +150,7 @@
 - Rust toolchain (for Linera contracts)
 - Convex account
 - Linera CLI for contract deployment
+- wasm-pack: `curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh`
 
 ### Setup
 
