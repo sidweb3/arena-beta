@@ -49,6 +49,11 @@ export async function executeContract(applicationId: string, operation: any, wal
   const provider = getProvider(walletType);
 
   if (!provider) {
+    // If a specific wallet type was requested but not found, throw an error
+    if (walletType === 'croissant' || walletType === 'checko') {
+      throw new Error(`${walletType} wallet provider not found`);
+    }
+
     // Realistic Mock Execution
     console.log("Mocking contract execution on simulated network...");
     
@@ -157,6 +162,10 @@ export async function queryContract(applicationId: string, query: string, wallet
     } catch (e) {
       console.warn("Wallet query failed, falling back to HTTP node", e);
     }
+  }
+
+  if (!provider && (walletType === 'croissant' || walletType === 'checko')) {
+    throw new Error(`${walletType} wallet provider not found`);
   }
 
   // Mock query response if no wallet/node available

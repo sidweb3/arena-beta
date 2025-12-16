@@ -95,6 +95,9 @@ export function WalletConnect() {
               {isLineraConnected && walletType === 'checko' && (
                 <Badge variant="default" className="h-4 px-1 text-[10px] bg-blue-600 hover:bg-blue-700">CheCko</Badge>
               )}
+              {isLineraConnected && walletType === 'croissant' && (
+                <Badge variant="default" className="h-4 px-1 text-[10px] bg-orange-500 hover:bg-orange-600">Croissant</Badge>
+              )}
               <span className="w-px h-3 bg-primary/20" />
               {(isLineraConnected ? lineraAccount : address)?.slice(0, 6)}...{(isLineraConnected ? lineraAccount : address)?.slice(-4)}
             </div>

@@ -80,7 +80,17 @@ export function LineraProvider({ children }: { children: ReactNode }) {
           const result = await (window as any).linera.request({ type: 'CONNECT_WALLET' });
           console.log("Croissant connection result:", result);
           
-          setAccount("Croissant User"); // Placeholder as address might not be directly returned in the simple response
+          // Attempt to extract address from result
+          let address = "Croissant User";
+          if (typeof result === 'string') {
+            address = result;
+          } else if (result && typeof result === 'object' && 'address' in result) {
+            address = result.address;
+          } else if (result && typeof result === 'object' && 'account' in result) {
+            address = result.account;
+          }
+
+          setAccount(address);
           setChainId("linera-testnet"); 
           setWalletType('croissant');
           setIsConnected(true);
