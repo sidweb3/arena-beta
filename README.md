@@ -33,7 +33,7 @@
 - ✅ **Linera Web Client Library**: Integrated with custom signer backend
 - ✅ **Testnet Conway**: Deployed and running
 - ✅ **Smart Contracts**: Rust contracts for duel creation, betting, and resolution
-- 🔄 **Alternative Wallets**: CheCko Wallet and Croissant support in progress
+- ✅ **Alternative Wallets**: CheCko Wallet and Croissant support implemented
 
 ---
 
@@ -132,7 +132,7 @@ For judges or developers wishing to run ARENA-X against a local network, we reco
 - **Network**: Testnet Conway
 - **Contract Status**: Deployed and verified
 - **Frontend**: Live at demo URL
-- **Wallet Support**: Linera Web Client (primary), CheCko & Croissant (planned)
+- **Wallet Support**: Linera Web Client, CheCko Wallet (Recommended), Croissant
 
 ---
 
@@ -150,6 +150,8 @@ It is available at: [https://github.com/respeer-ai/linera-wallet#readme](https:/
 CheCko injects a provider into the web page, allowing applications to request accounts and sign transactions without handling sensitive data directly.
 
 ### Example Usage
+
+The application uses the `useLinera` hook to connect to CheCko. The integration prioritizes CheCko when available.
 
 ---
 
