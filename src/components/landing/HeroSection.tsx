@@ -1,103 +1,101 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Swords, Bot, Users, FileText, Shield, Zap } from "lucide-react";
+import { ArrowRight, FileText, Zap, Shield, Cpu } from "lucide-react";
 import { useNavigate } from "react-router";
 
 export function HeroSection() {
   const navigate = useNavigate();
 
   return (
-    <section className="relative flex-1 flex items-center justify-center px-4 py-32 overflow-hidden min-h-[90vh]">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] animate-pulse delay-1000" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
-      </div>
-
-      <div className="max-w-7xl mx-auto text-center space-y-12 relative z-10">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20 pb-32">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+      
+      <div className="container relative z-10 px-4 md:px-6 text-center">
         <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="space-y-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8 border border-primary/20 backdrop-blur-sm"
         >
-          <div className="flex items-center justify-center gap-8 mb-12">
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="p-5 rounded-2xl bg-card/50 border border-primary/20 backdrop-blur-md shadow-[0_0_30px_rgba(0,255,136,0.1)]"
-            >
-              <Bot className="h-14 w-14 text-primary" />
-            </motion.div>
-            
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary blur-xl opacity-20" />
-              <Swords className="h-12 w-12 text-muted-foreground relative z-10" />
-            </div>
-
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              className="p-5 rounded-2xl bg-card/50 border border-secondary/20 backdrop-blur-md shadow-[0_0_30px_rgba(255,0,128,0.1)]"
-            >
-              <Users className="h-14 w-14 text-secondary" />
-            </motion.div>
-          </div>
-
-          <h1 className="text-6xl sm:text-7xl lg:text-9xl font-black tracking-tighter leading-none select-none">
-            ARENA
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-secondary animate-gradient-x">
-              -X
-            </span>
-          </h1>
-          
-          <p className="text-xl sm:text-3xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-light">
-            The first <span className="text-foreground font-medium">AI-Native Prediction Market</span> on Linera.
-            <br className="hidden sm:block" />
-            Deploy agents. Challenge rivals. Earn yield.
-          </p>
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+          </span>
+          Live on Linera Testnet
         </motion.div>
 
-        <motion.div
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6"
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/50"
         >
-          <Button
-            size="lg"
+          ALGORITHMIC
+          <br />
+          <span className="text-primary bg-clip-text bg-gradient-to-r from-primary via-accent to-secondary">WARFARE</span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed"
+        >
+          The first decentralized battleground for autonomous AI trading agents.
+          <br className="hidden md:block" />
+          Deploy strategies, challenge rivals, and earn yield with sub-second finality.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
+          <Button 
+            size="lg" 
             onClick={() => navigate("/arena")}
-            className="h-16 px-12 text-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_40px_rgba(0,255,136,0.3)] hover:shadow-[0_0_60px_rgba(0,255,136,0.5)] transition-all duration-300 rounded-full group"
+            className="h-14 px-8 text-lg rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_30px_rgba(0,255,136,0.3)] transition-all hover:scale-105"
           >
-            <Zap className="mr-2 h-6 w-6 fill-current" />
-            Enter App
+            <Zap className="mr-2 h-5 w-5" />
+            Enter Arena
           </Button>
-          <Button
-            size="lg"
-            variant="outline"
+          <Button 
+            size="lg" 
+            variant="outline" 
             onClick={() => navigate("/whitepaper")}
-            className="h-16 px-12 text-xl border-primary/20 hover:bg-primary/5 backdrop-blur-sm rounded-full hover:border-primary/50 transition-all"
+            className="h-14 px-8 text-lg rounded-full border-primary/20 hover:bg-primary/5 backdrop-blur-sm transition-all hover:scale-105"
           >
-            <FileText className="mr-2 h-6 w-6" />
-            Whitepaper
+            <FileText className="mr-2 h-5 w-5" />
+            Read Whitepaper
           </Button>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="pt-12 flex items-center justify-center gap-8 text-sm text-muted-foreground"
+          transition={{ duration: 1, delay: 0.5 }}
+          className="mt-20 grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto text-sm text-muted-foreground"
         >
-          <div className="flex items-center gap-2">
-            <Shield className="h-4 w-4 text-primary" />
-            <span>Audited Contracts</span>
+          <div className="flex flex-col items-center gap-2">
+            <div className="p-3 rounded-full bg-primary/5 border border-primary/10">
+              <Shield className="h-5 w-5 text-primary" />
+            </div>
+            <p>Secure & Verifiable</p>
           </div>
-          <div className="w-1 h-1 rounded-full bg-border" />
-          <div className="flex items-center gap-2">
-            <Zap className="h-4 w-4 text-accent" />
-            <span>Sub-second Finality</span>
+          <div className="flex flex-col items-center gap-2">
+            <div className="p-3 rounded-full bg-accent/5 border border-accent/10">
+              <Cpu className="h-5 w-5 text-accent" />
+            </div>
+            <p>AI-Native Protocol</p>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <div className="p-3 rounded-full bg-secondary/5 border border-secondary/10">
+              <Zap className="h-5 w-5 text-secondary" />
+            </div>
+            <p>Sub-second Finality</p>
           </div>
         </motion.div>
       </div>

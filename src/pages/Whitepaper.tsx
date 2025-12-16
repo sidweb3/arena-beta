@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
-import { ArrowLeft, Shield, Zap, Globe, Cpu, Layers, Scale, Lock, Activity, Swords, Bot } from "lucide-react";
+import { ArrowLeft, Shield, Zap, Globe, Cpu, Layers, Scale, Lock, Activity, Swords, Bot, Network, Code, Database } from "lucide-react";
 
 export default function Whitepaper() {
   const navigate = useNavigate();
@@ -10,22 +10,27 @@ export default function Whitepaper() {
     {
       icon: Globe,
       title: "Abstract",
-      content: "Agent Arena represents a paradigm shift in decentralized finance (DeFi) by introducing autonomous AI agents as primary market participants. Unlike traditional prediction markets where humans trade against humans, Agent Arena creates a trustless environment where AI strategies compete in real-time, verifiable duels. By December 2025, we aim to host over 10,000 active autonomous agents."
+      content: "ARENA-X represents a paradigm shift in decentralized finance (DeFi) by introducing autonomous AI agents as primary market participants. Unlike traditional prediction markets where humans trade against humans, ARENA-X creates a trustless environment where AI strategies compete in real-time, verifiable duels. Leveraging the Linera blockchain's microchain architecture, we achieve sub-second finality and infinite scalability, enabling high-frequency algorithmic warfare."
     },
     {
       icon: Scale,
       title: "The Problem",
-      content: "Current DeFi trading is dominated by high-frequency trading firms and opaque bots. Retail users are often at a disadvantage. Furthermore, evaluating the true performance of an algorithmic strategy is difficult due to cherry-picked data and lack of verifiable track records. The market lacks a standardized, transparent arena for algorithmic competition."
+      content: "Current DeFi trading is dominated by high-frequency trading firms and opaque bots, leaving retail users at a disadvantage. Furthermore, evaluating the true performance of an algorithmic strategy is difficult due to cherry-picked data and lack of verifiable track records. The market lacks a standardized, transparent arena for algorithmic competition where code is law and performance is immutable."
     },
     {
       icon: Cpu,
       title: "The Solution: Proof of Strategy",
-      content: "Agent Arena utilizes the Linera blockchain to execute transparent, high-speed trading duels. Agents are deployed with specific strategies, and their performance is immutably recorded. Users can back (bet on) agents based on verifiable on-chain history, creating a meritocratic marketplace for trading intelligence. This 'Proof of Strategy' consensus mechanism ensures that only the most robust algorithms thrive."
+      content: "ARENA-X utilizes the Linera blockchain to execute transparent, high-speed trading duels. Agents are deployed with specific strategies, and their performance is immutably recorded on-chain. Users can back (bet on) agents based on verifiable history, creating a meritocratic marketplace for trading intelligence. This 'Proof of Strategy' consensus mechanism ensures that only the most robust algorithms thrive."
     },
     {
       icon: Swords,
       title: "Duel Mechanics",
       content: "Duels are the core interaction within the Arena. Agents are paired based on ELO ratings and strategy compatibility. A duel consists of a fixed time window where agents execute trades against a live market feed. The Linera microchain validates every trade signature, ensuring that the reported PnL is mathematically impossible to forge. Winners are determined by the highest risk-adjusted return (Sharpe Ratio) over the duel period."
+    },
+    {
+      icon: Network,
+      title: "Linera Integration",
+      content: "Built on Linera's multi-chain protocol, ARENA-X assigns a dedicated microchain to each active duel. This parallel execution model eliminates network congestion, allowing thousands of duels to occur simultaneously with near-instant confirmation times. We utilize Linera's cross-chain messaging for atomic settlement of bets and oracle data propagation, ensuring a seamless and secure user experience."
     },
     {
       icon: Bot,
@@ -35,7 +40,7 @@ export default function Whitepaper() {
     {
       icon: Layers,
       title: "Technology Stack",
-      content: "Built on the Linera microchain architecture for infinite scalability and sub-second finality. The frontend utilizes React and Vite for a responsive experience, while Convex handles real-time state synchronization and user data persistence. Smart contracts are written in Rust, ensuring type safety and performance. We leverage Zero-Knowledge Proofs (ZKPs) for strategy privacy while maintaining verifiable outcomes."
+      content: "Frontend: React 19, Vite, Tailwind CSS, Framer Motion. Backend: Convex for real-time state synchronization. Blockchain: Linera (Rust Smart Contracts) for duel logic and settlement. Wallets: Native support for CheCko and Croissant wallets, with EVM compatibility via Wagmi. Security: Zero-Knowledge Proofs (ZKPs) for strategy privacy."
     },
     {
       icon: Shield,
@@ -43,13 +48,8 @@ export default function Whitepaper() {
       content: "The ARENA token serves as the utility and governance token of the ecosystem. Stakers verify duel outcomes and earn a portion of the protocol fees. Governance participants vote on protocol parameters, including duel types, supported assets, and fee structures. A deflationary burn mechanism is triggered with every duel resolution."
     },
     {
-      icon: Lock,
-      title: "Security & Audits",
-      content: "Security is paramount. All smart contracts undergo rigorous formal verification and third-party audits. The Linera protocol's inherent security features protect against reentrancy attacks and front-running. Our bug bounty program incentivizes white-hat hackers to continuously stress-test the infrastructure."
-    },
-    {
       icon: Activity,
-      title: "Roadmap: 2025 & Beyond",
+      title: "Roadmap",
       content: "Q1 2025: Mainnet Launch & Genesis Duel. Q2 2025: Cross-chain bridge integration (Ethereum, Solana). Q3 2025: Launch of 'Agent DAO' for collective strategy management. Q4 2025: Institutional API access and high-frequency trading leagues."
     }
   ];
@@ -63,7 +63,7 @@ export default function Whitepaper() {
             <span className="font-semibold">Back to Home</span>
           </div>
           <div className="font-bold text-xl bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
-            Whitepaper v2.0
+            Whitepaper v2.1
           </div>
         </div>
       </nav>
@@ -84,7 +84,7 @@ export default function Whitepaper() {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">PROTOCOL</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            A decentralized framework for autonomous AI trading competitions, verifiable strategy performance, and high-frequency prediction markets.
+            A decentralized framework for autonomous AI trading competitions, verifiable strategy performance, and high-frequency prediction markets on Linera.
           </p>
         </motion.div>
 
