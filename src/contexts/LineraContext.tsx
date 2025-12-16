@@ -73,7 +73,27 @@ export function LineraProvider({ children }: { children: ReactNode }) {
     }
     
     if (type === 'croissant') {
-      toast.info("Croissant Wallet integration coming soon!");
+      console.log("Attempting to connect to Croissant wallet...");
+      if ((window as any).linera) {
+        try {
+          // Croissant uses { type: 'CONNECT_WALLET' }
+          const result = await (window as any).linera.request({ type: 'CONNECT_WALLET' });
+          console.log("Croissant connection result:", result);
+          
+          setAccount("Croissant User"); // Placeholder as address might not be directly returned in the simple response
+          setChainId("linera-testnet"); 
+          setWalletType('croissant');
+          setIsConnected(true);
+          setIsMock(false);
+          toast.success("Connected to Croissant Wallet");
+        } catch (e) {
+          console.error("Croissant connection failed:", e);
+          toast.error("Failed to connect to Croissant Wallet");
+        }
+      } else {
+        toast.info("Croissant Wallet not detected. Opening installation guide...");
+        window.open("https://github.com/Nirajsah/croissant", "_blank");
+      }
       setIsLoading(false);
       return;
     }

@@ -24,9 +24,13 @@ export function isValidLineraAddress(address: string): boolean {
 /**
  * Helper to get the active provider (CheCko or Linera)
  */
-function getProvider() {
+function getProvider(walletType?: string) {
   if (typeof window === 'undefined') return null;
-  // Prioritize CheCko if available
+  
+  if (walletType === 'checko' && (window as any).checko) return (window as any).checko;
+  if (walletType === 'croissant' && (window as any).linera) return (window as any).linera;
+
+  // Prioritize CheCko if available and no specific type requested
   if ((window as any).checko) return (window as any).checko;
   if ((window as any).linera) return (window as any).linera;
   return null;
@@ -36,12 +40,13 @@ function getProvider() {
  * Executes a mutation operation on a Linera application
  * @param applicationId The ID of the application to interact with
  * @param operation The operation payload (usually a JSON object or string)
+ * @param walletType The type of wallet to use (optional)
  * @returns The result of the execution
  */
-export async function executeContract(applicationId: string, operation: any) {
-  console.log("Executing contract:", applicationId, operation);
+export async function executeContract(applicationId: string, operation: any, walletType?: string) {
+  console.log("Executing contract:", applicationId, operation, walletType);
   
-  const provider = getProvider();
+  const provider = getProvider(walletType);
 
   if (!provider) {
     // Realistic Mock Execution
@@ -59,6 +64,34 @@ export async function executeContract(applicationId: string, operation: any) {
       effects: [],
       mock: true
     };
+  }
+
+  // Handle Croissant specific execution
+  if (walletType === 'croissant') {
+    // Croissant documentation primarily shows QUERY support. 
+    // We will attempt to use the QUERY type with the mutation string as a fallback 
+    // or assume it might support a similar structure if updated.
+    // For now, we'll try to use the standard GraphQL mutation string via the 'QUERY' type 
+    // as some clients handle mutations via the query endpoint.
+    
+    const mutation = `
+      mutation ExecuteOperation($applicationId: String!, $operation: String!) {
+        executeOperation(applicationId: $applicationId, operation: $operation)
+      }
+    `;
+
+    try {
+      return await provider.request({
+        type: 'QUERY', 
+        applicationId,
+        query: mutation // Attempting to pass mutation as query
+        // Note: If Croissant strictly enforces query-only, this might need adjustment 
+        // when mutation support is explicitly documented.
+      });
+    } catch (error) {
+      console.error("Croissant execution failed:", error);
+      throw error;
+    }
   }
 
   // Construct the GraphQL mutation for the Linera node/wallet
@@ -95,16 +128,25 @@ export async function executeContract(applicationId: string, operation: any) {
  * Queries a Linera application state
  * @param applicationId The ID of the application to query
  * @param query The GraphQL query string
+ * @param walletType The type of wallet to use (optional)
  * @returns The query result
  */
-export async function queryContract(applicationId: string, query: string) {
-  console.log("Querying contract:", applicationId, query);
+export async function queryContract(applicationId: string, query: string, walletType?: string) {
+  console.log("Querying contract:", applicationId, query, walletType);
 
-  const provider = getProvider();
+  const provider = getProvider(walletType);
 
   // Try using the wallet first if available
   if (provider) {
     try {
+      if (walletType === 'croissant') {
+        return await provider.request({
+          type: 'QUERY',
+          applicationId,
+          query
+        });
+      }
+
       return await provider.request({
         method: 'linera_graphqlQuery',
         params: {

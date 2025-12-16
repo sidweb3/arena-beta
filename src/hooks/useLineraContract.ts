@@ -4,7 +4,7 @@ import { useLinera } from '@/contexts/LineraContext';
 import { toast } from 'sonner';
 
 export function useLineraContract(applicationId: string) {
-  const { isConnected, isMock } = useLinera();
+  const { isConnected, isMock, walletType } = useLinera();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,7 +17,7 @@ export function useLineraContract(applicationId: string) {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await executeContract(applicationId, operation);
+      const result = await executeContract(applicationId, operation, walletType || undefined);
       
       if (result?.mock) {
         toast.success(`Transaction confirmed on Linera (Block #${result.height})`, {
@@ -34,21 +34,19 @@ export function useLineraContract(applicationId: string) {
       setError(errorMessage);
       toast.error(errorMessage);
       throw err;
-    } finally {
-      setIsLoading(false);
     }
-  }, [applicationId, isConnected]);
+  }, [applicationId, isConnected, walletType]);
 
   const query = useCallback(async (queryString: string) => {
     try {
-      return await queryContract(applicationId, queryString);
+      return await queryContract(applicationId, queryString, walletType || undefined);
     } catch (err) {
       console.error("Query error:", err);
       const errorMessage = err instanceof Error ? err.message : 'Query failed';
       setError(errorMessage);
       throw err;
     }
-  }, [applicationId]);
+  }, [applicationId, walletType]);
 
   return { mutate, query, isLoading, error };
 }
