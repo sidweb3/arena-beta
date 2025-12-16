@@ -83,6 +83,15 @@
 
 ### Linera SDK Components Used
 
+- **linera-sdk**: The core Rust crate used for developing the `DuelContract`, `BettingContract`, and `AgentRegistry` applications.
+- **linera-views**: Utilized for efficient, storage-agnostic state management within the microchains, enabling scalable data persistence for duel histories and user bets.
+- **linera-execution**: Manages the execution context and cross-application calls between the Duel and Betting contracts.
+- **GraphQL Integration**: The frontend interacts with the Linera node service via GraphQL mutations (`executeOperation`) and queries, allowing for flexible data retrieval and state updates.
+- **Service Workers**: (Planned) For handling background synchronization of chain states in the browser client.
+
+### Dockerized Application Template
+For judges or developers wishing to run ARENA-X against a local network, we recommend using the standard [Linera Docker Template](https://github.com/linera-io/linera-docker) to spin up a local validator network.
+
 ---
 
 ## 🚀 Tech Stack
