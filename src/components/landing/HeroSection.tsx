@@ -2,6 +2,48 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Swords, Bot, Users, FileText, Shield } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useState, useEffect } from "react";
+
+const TypewriterText = ({ words }: { words: string[] }) => {
+  const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [reverse, setReverse] = useState(false);
+  const [blink, setBlink] = useState(true);
+
+  // Blinking cursor
+  useEffect(() => {
+    const timeout2 = setTimeout(() => {
+      setBlink((prev) => !prev);
+    }, 500);
+    return () => clearTimeout(timeout2);
+  }, [blink]);
+
+  // Typing logic
+  useEffect(() => {
+    if (subIndex === words[index].length + 1 && !reverse) {
+      setReverse(true);
+      return;
+    }
+
+    if (subIndex === 0 && reverse) {
+      setReverse(false);
+      setIndex((prev) => (prev + 1) % words.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setSubIndex((prev) => prev + (reverse ? -1 : 1));
+    }, Math.max(reverse ? 75 : subIndex === words[index].length ? 1000 : 150, parseInt((Math.random() * 350).toString())));
+
+    return () => clearTimeout(timeout);
+  }, [subIndex, index, reverse, words]);
+
+  return (
+    <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent animate-gradient-x">
+      {`${words[index].substring(0, subIndex)}${blink ? "|" : " "}`}
+    </span>
+  );
+};
 
 export function HeroSection() {
   const navigate = useNavigate();
@@ -41,11 +83,9 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-8xl font-extrabold tracking-tight leading-none">
+          <h1 className="text-4xl sm:text-6xl lg:text-8xl font-extrabold tracking-tight leading-none min-h-[160px] sm:min-h-[200px] flex flex-col justify-center">
             The Future of <br />
-            <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent animate-gradient-x">
-              Algorithmic Warfare
-            </span>
+            <TypewriterText words={["Algorithmic Warfare", "Autonomous Trading", "On-Chain Betting", "Verifiable Strategy"]} />
           </h1>
           
           <p className="text-lg sm:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">

@@ -60,9 +60,9 @@ export function Navbar() {
             <img 
               src="/arenalogo.png" 
               alt="ARENA-X" 
-              className="h-10 w-10 object-contain transition-transform duration-300 group-hover:scale-110" 
+              className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-110" 
             />
-            <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-muted-foreground group-hover:from-primary group-hover:to-accent transition-all duration-300">
+            <span className="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-muted-foreground group-hover:from-primary group-hover:to-accent transition-all duration-300">
               ARENA-X
             </span>
           </div>
