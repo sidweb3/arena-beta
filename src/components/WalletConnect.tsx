@@ -83,12 +83,12 @@ export function WalletConnect() {
   const isConnected = (isWagmiConnected && address) || (isLineraConnected && lineraAccount);
 
   return (
-    <div className="relative flex flex-col items-end gap-2">
-      <div className="flex items-center gap-2 min-h-[40px]">
+    <div className="relative flex items-center">
+      <div className="flex items-center gap-2">
         {isConnected ? (
           <div key="connected" className="flex items-center gap-2 animate-in fade-in duration-200">
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-primary/10 border border-primary/20 text-sm font-mono">
-              <span className="text-xs text-muted-foreground uppercase">{isLineraConnected ? 'Linera' : 'EVM'}</span>
+              <span className="text-xs text-muted-foreground uppercase hidden sm:inline">{isLineraConnected ? 'Linera' : 'EVM'}</span>
               {isLineraConnected && isLineraMock && (
                 <Badge variant="secondary" className="h-4 px-1 text-[10px]">MOCK</Badge>
               )}
@@ -98,7 +98,7 @@ export function WalletConnect() {
               {isLineraConnected && walletType === 'croissant' && (
                 <Badge variant="default" className="h-4 px-1 text-[10px] bg-orange-500 hover:bg-orange-600">Croissant</Badge>
               )}
-              <span className="w-px h-3 bg-primary/20" />
+              <span className="w-px h-3 bg-primary/20 hidden sm:block" />
               {(isLineraConnected ? lineraAccount : address)?.slice(0, 6)}...{(isLineraConnected ? lineraAccount : address)?.slice(-4)}
             </div>
             <Button
@@ -113,15 +113,15 @@ export function WalletConnect() {
                   setTimeout(() => handleLineraConnect('checko'), 100);
                 }
               }}
-              className="h-8 px-3 text-xs border-primary/30 hover:bg-primary/5"
+              className="h-8 px-3 text-xs border-primary/30 hover:bg-primary/5 hidden sm:flex"
             >
-              Switch to {isLineraConnected ? 'EVM' : 'CheCko'}
+              Switch
             </Button>
             <Button
               variant="outline"
               size="icon"
               onClick={handleDisconnect}
-              className="border-destructive/50 hover:bg-destructive/10"
+              className="h-8 w-8 border-destructive/50 hover:bg-destructive/10"
             >
               <LogOut className="h-4 w-4" />
             </Button>
@@ -132,17 +132,17 @@ export function WalletConnect() {
               <Button
                 onClick={() => handleLineraConnect('checko')}
                 disabled={isLineraLoading}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(0,255,136,0.3)] border border-primary/50"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(0,255,136,0.3)] border border-primary/50 h-9"
               >
                 {isLineraLoading ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
                   <ShieldCheck className="mr-2 h-4 w-4" />
                 )}
-                Connect CheCko
+                <span className="hidden sm:inline">Connect </span>CheCko
               </Button>
-              <Badge className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] px-1.5 py-0 h-5 shadow-md animate-pulse">
-                Recommended
+              <Badge className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] px-1.5 py-0 h-5 shadow-md animate-pulse pointer-events-none">
+                Rec
               </Badge>
             </div>
 
@@ -151,11 +151,11 @@ export function WalletConnect() {
                 <Button
                   variant="outline"
                   disabled={isLineraLoading}
-                  className="border-primary/20 hover:bg-primary/5"
+                  className="border-primary/20 hover:bg-primary/5 h-9 px-2 sm:px-4"
                 >
-                  <Zap className="mr-2 h-4 w-4" />
-                  Other
-                  <ChevronDown className="ml-2 h-4 w-4 opacity-50" />
+                  <Zap className="sm:mr-2 h-4 w-4" />
+                  <span className="hidden sm:inline">Other</span>
+                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 hidden sm:block" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
@@ -170,12 +170,12 @@ export function WalletConnect() {
               </DropdownMenuContent>
             </DropdownMenu>
             
-            <div className="relative">
+            <div className="relative hidden sm:block">
               <Button
                 onClick={handleConnect}
                 disabled={isPending}
                 variant="outline"
-                className="border-primary/20 hover:bg-primary/5 opacity-80 hover:opacity-100"
+                className="border-primary/20 hover:bg-primary/5 opacity-80 hover:opacity-100 h-9"
               >
                 {isPending ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -189,20 +189,22 @@ export function WalletConnect() {
         )}
       </div>
       
-      {/* Helper Notes */}
+      {/* Helper Notes - Absolute Positioned */}
       {!isConnected && (
-        <div className="flex flex-col gap-1 text-right">
-          <div className="text-[10px] text-muted-foreground opacity-70 flex items-center gap-1 justify-end">
-            <Info className="h-3 w-3" />
+        <div className="absolute top-full right-0 mt-3 w-max flex flex-col gap-1 text-right pointer-events-none z-50">
+          <div className="text-[10px] text-muted-foreground opacity-90 flex items-center gap-1 justify-end bg-background/95 backdrop-blur-md px-3 py-1.5 rounded-full border border-border/50 shadow-lg">
+            <Info className="h-3 w-3 text-primary" />
             <span>CheCko Wallet Recommended for Linera</span>
           </div>
         </div>
       )}
       
       {isConnected && isLineraMock && (
-        <div className="text-[9px] text-blue-400/80 flex items-center gap-1">
-          <Info className="h-3 w-3" />
-          <span>Mock mode active - transactions simulated</span>
+        <div className="absolute top-full right-0 mt-2 w-max pointer-events-none z-50">
+          <div className="text-[9px] text-blue-400 flex items-center gap-1 bg-background/95 backdrop-blur-md px-2 py-1 rounded-md border border-blue-500/20 shadow-sm">
+            <Info className="h-3 w-3" />
+            <span>Mock mode active</span>
+          </div>
         </div>
       )}
     </div>
