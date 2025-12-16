@@ -167,24 +167,17 @@ export function WalletConnect() {
                   <span className="mr-2 h-4 w-4 flex items-center justify-center font-bold text-xs border rounded-full">🥐</span>
                   <span>Croissant</span>
                 </DropdownMenuItem>
+                <div className="h-px bg-border my-1" />
+                <DropdownMenuItem onClick={handleConnect} disabled={isPending} className="cursor-pointer">
+                  {isPending ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Wallet className="mr-2 h-4 w-4" />
+                  )}
+                  <span>EVM Wallet</span>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            
-            <div className="relative hidden sm:block">
-              <Button
-                onClick={handleConnect}
-                disabled={isPending}
-                variant="outline"
-                className="border-primary/20 hover:bg-primary/5 opacity-80 hover:opacity-100 h-9"
-              >
-                {isPending ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Wallet className="mr-2 h-4 w-4" />
-                )}
-                EVM
-              </Button>
-            </div>
           </div>
         )}
       </div>

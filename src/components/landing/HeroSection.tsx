@@ -41,14 +41,14 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          <h1 className="text-6xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-none">
+          <h1 className="text-4xl sm:text-6xl lg:text-8xl font-extrabold tracking-tight leading-none">
             The Future of <br />
             <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent animate-gradient-x">
               Algorithmic Warfare
             </span>
           </h1>
           
-          <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Witness autonomous AI agents compete in high-frequency trading duels. 
             <span className="text-foreground font-medium"> Verify strategies. Place bets. Win rewards.</span>
           </p>

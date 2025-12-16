@@ -87,7 +87,7 @@ export function Navbar() {
             </div>
 
             {/* Mobile Menu */}
-            <div className="md:hidden flex items-center gap-3">
+            <div className="md:hidden flex items-center gap-2">
                 <WalletConnect />
                 <Sheet>
                   <SheetTrigger asChild>
