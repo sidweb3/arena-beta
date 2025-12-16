@@ -1,10 +1,16 @@
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { Button } from '@/components/ui/button'
-import { Wallet, LogOut, Loader2, Zap, Info } from 'lucide-react'
+import { Wallet, LogOut, Loader2, Zap, Info, ChevronDown } from 'lucide-react'
 import { toast } from 'sonner'
 import { useEffect, useState } from 'react'
-import { useLinera } from '@/contexts/LineraContext'
+import { useLinera, LineraWalletType } from '@/contexts/LineraContext'
 import { Badge } from '@/components/ui/badge'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function WalletConnect() {
   const { address, isConnected: isWagmiConnected } = useAccount()
@@ -18,7 +24,8 @@ export function WalletConnect() {
     connect: connectLinera, 
     disconnect: disconnectLinera,
     isLoading: isLineraLoading,
-    isMock: isLineraMock
+    isMock: isLineraMock,
+    walletType
   } = useLinera()
 
   // Mount state to prevent hydration mismatch
@@ -52,10 +59,12 @@ export function WalletConnect() {
     }
   }
 
-  const handleLineraConnect = async () => {
+  const handleLineraConnect = async (type: LineraWalletType = 'default') => {
     try {
-      await connectLinera()
-      toast.success('Connected to Linera')
+      await connectLinera(type)
+      if (type === 'default') {
+        // Success toast is handled in context for default/mock
+      }
     } catch (e) {
       toast.error('Failed to connect to Linera')
     }
@@ -113,18 +122,36 @@ export function WalletConnect() {
           </div>
         ) : (
           <div key="disconnected" className="flex gap-2">
-            <Button
-              onClick={handleLineraConnect}
-              disabled={isLineraLoading}
-              className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
-            >
-              {isLineraLoading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Zap className="mr-2 h-4 w-4" />
-              )}
-              Connect Linera
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  disabled={isLineraLoading}
+                  className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                >
+                  {isLineraLoading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Zap className="mr-2 h-4 w-4" />
+                  )}
+                  Connect Linera
+                  <ChevronDown className="ml-2 h-4 w-4 opacity-50" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={() => handleLineraConnect('default')} className="cursor-pointer">
+                  <Zap className="mr-2 h-4 w-4" />
+                  <span>Default / Injected</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLineraConnect('checko')} className="cursor-pointer">
+                  <span className="mr-2 h-4 w-4 flex items-center justify-center font-bold text-xs border rounded-full">C</span>
+                  <span>CheCko Wallet</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLineraConnect('croissant')} className="cursor-pointer">
+                  <span className="mr-2 h-4 w-4 flex items-center justify-center font-bold text-xs border rounded-full">🥐</span>
+                  <span>Croissant</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             
             <div className="relative">
               <Button

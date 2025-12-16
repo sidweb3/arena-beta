@@ -1,12 +1,16 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { toast } from "sonner";
 
+// Define supported wallet types
+export type LineraWalletType = 'default' | 'checko' | 'croissant';
+
 // Interface for the Linera Context
 interface LineraContextType {
   isConnected: boolean;
   account: string | null;
   chainId: string | null;
-  connect: () => Promise<void>;
+  walletType: LineraWalletType | null;
+  connect: (type?: LineraWalletType) => Promise<void>;
   disconnect: () => void;
   isLoading: boolean;
   error: string | null;
@@ -24,14 +28,29 @@ export function LineraProvider({ children }: { children: ReactNode }) {
   const [isConnected, setIsConnected] = useState(false);
   const [account, setAccount] = useState<string | null>(null);
   const [chainId, setChainId] = useState<string | null>(null);
+  const [walletType, setWalletType] = useState<LineraWalletType | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isMock, setIsMock] = useState(false);
 
-  const connect = async () => {
+  const connect = async (type: LineraWalletType = 'default') => {
     setIsLoading(true);
     setError(null);
     setIsMock(false);
+    
+    // Handle specific wallet types
+    if (type === 'checko') {
+      toast.info("CheCko Wallet integration coming soon!");
+      setIsLoading(false);
+      return;
+    }
+    
+    if (type === 'croissant') {
+      toast.info("Croissant Wallet integration coming soon!");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       console.log("Initializing Linera connection...");
       
@@ -45,7 +64,7 @@ export function LineraProvider({ children }: { children: ReactNode }) {
           // Try standard request first
           accounts = await provider.request({ method: 'eth_requestAccounts' });
         } catch (e) {
-          console.log("eth_requestAccounts failed, trying linera_accounts");
+          console.log("eth_requestAccounts failed, trying linera_accounts", e);
           try {
              // Fallback to specific linera method if exists
              accounts = await provider.request({ method: 'linera_accounts' });
@@ -58,6 +77,7 @@ export function LineraProvider({ children }: { children: ReactNode }) {
         if (accounts && accounts.length > 0) {
            setAccount(accounts[0]);
            setChainId("linera-mainnet"); // or fetch from provider
+           setWalletType('default');
            setIsConnected(true);
            setIsMock(false);
            return;
@@ -76,6 +96,7 @@ export function LineraProvider({ children }: { children: ReactNode }) {
       
       setAccount(mockAddress);
       setChainId("linera-testnet-mock");
+      setWalletType('default');
       setIsConnected(true);
       setIsMock(true);
       toast.info("Connected to Linera (Simulated Network)");
@@ -85,6 +106,7 @@ export function LineraProvider({ children }: { children: ReactNode }) {
       setError(err instanceof Error ? err.message : "Failed to connect to Linera wallet");
       setIsConnected(false);
       setIsMock(false);
+      setWalletType(null);
     } finally {
       setIsLoading(false);
     }
@@ -93,12 +115,13 @@ export function LineraProvider({ children }: { children: ReactNode }) {
   const disconnect = () => {
     setAccount(null);
     setChainId(null);
+    setWalletType(null);
     setIsConnected(false);
     setIsMock(false);
   };
 
   return (
-    <LineraContext.Provider value={{ isConnected, account, chainId, connect, disconnect, isLoading, error, isMock }}>
+    <LineraContext.Provider value={{ isConnected, account, chainId, walletType, connect, disconnect, isLoading, error, isMock }}>
       {children}
     </LineraContext.Provider>
   );
@@ -113,6 +136,7 @@ export function useLinera() {
       isConnected: false,
       account: null,
       chainId: null,
+      walletType: null,
       connect: async () => {},
       disconnect: () => {},
       isLoading: false,
