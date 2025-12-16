@@ -65,8 +65,8 @@ export function LineraProvider({ children }: { children: ReactNode }) {
       } else {
         // If CheCko is not detected, we can prompt the user to install it
         // For now, we'll show the info toast
-        toast.info("CheCko Wallet not detected. Please install the extension.");
-        window.open("https://checko.wallet", "_blank"); // Placeholder URL
+        toast.info("CheCko Wallet not detected. Opening installation guide...");
+        window.open("https://github.com/respeer-ai/linera-wallet#readme", "_blank");
       }
       setIsLoading(false);
       return;

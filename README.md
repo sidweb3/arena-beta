@@ -131,6 +131,7 @@
 
 ### About CheCko
 CheCko is a specialized wallet for the Linera ecosystem designed to separate the wallet client from the application logic, ensuring enhanced security and modularity.
+It is available at: [https://github.com/respeer-ai/linera-wallet#readme](https://github.com/respeer-ai/linera-wallet#readme)
 
 ### Architecture
 - **Wallet Client Separation**: Keeps private keys isolated from the dApp layer.
