@@ -57,10 +57,11 @@ export function Navbar() {
             className="flex items-center gap-3 cursor-pointer group" 
             onClick={() => navigate("/")}
           >
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 group-hover:border-primary/50 transition-colors overflow-hidden">
-              <div className="absolute inset-0 bg-primary/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
-              <img src="/arenalogo.png" alt="ARENA-X" className="h-6 w-6 object-contain relative z-10" />
-            </div>
+            <img 
+              src="/arenalogo.png" 
+              alt="ARENA-X" 
+              className="h-10 w-10 object-contain transition-transform duration-300 group-hover:scale-110" 
+            />
             <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-muted-foreground group-hover:from-primary group-hover:to-accent transition-all duration-300">
               ARENA-X
             </span>
